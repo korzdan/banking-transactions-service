@@ -1,0 +1,13 @@
+package com.springproject.fileparserwebapp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class FileParserWebAppApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(FileParserWebAppApplication.class, args);
+    }
+
+}
