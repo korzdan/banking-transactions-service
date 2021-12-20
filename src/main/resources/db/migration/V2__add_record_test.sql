@@ -1,0 +1,9 @@
+INSERT INTO transactions VALUES
+(
+ '2154364a-8157-4099-871f-ffd6225b5c76' :: uuid,
+ '03fe30f5-1758-4a80-b925-00293cf31607' :: uuid,
+ '2021-04-29 16:46:13',
+ 9669,
+ 'USD',
+ 'COMPLETE'
+);
