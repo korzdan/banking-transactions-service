@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -26,8 +25,10 @@ public class Transaction {
 
     public Transaction() {}
 
-    public Transaction(Timestamp timestamp,
+    public Transaction(UUID transactionId, UUID userId, Timestamp timestamp,
                        long amount, String currency, String status) {
+        this.transactionId = transactionId;
+        this.userId = userId;
         this.timestamp = timestamp;
         this.amount = amount;
         this.currency = currency;
@@ -72,5 +73,17 @@ public class Transaction {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", userId=" + userId +
+                ", timestamp=" + timestamp +
+                ", amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
