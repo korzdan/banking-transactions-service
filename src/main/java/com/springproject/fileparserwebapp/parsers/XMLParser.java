@@ -20,7 +20,7 @@ public class XMLParser {
 
     private static final String FILE_PATH = "src/main/resources/files_to_parse/xml_example.xml";
 
-    public ArrayList<Transaction> parseTransactions() {
+    public ArrayList<Transaction> parseTransactionsFromXML() {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();

@@ -37,6 +37,11 @@ class TransactionServiceTest {
 
     @Test
     void parseAndSaveTransactionsFromXML() {
-        service.parseAndSaveAllTransactions();
+        service.parseAndSaveTransactionsFromXML();
+    }
+
+    @Test
+    void parseAndSaveTransactionsFromCSV() {
+        service.parseAndSaveTransactionsFromCSV();
     }
 }
