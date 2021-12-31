@@ -1,25 +1,25 @@
 package com.springproject.fileparserwebapp.service;
 
 import com.springproject.fileparserwebapp.model.Transaction;
-import com.springproject.fileparserwebapp.parsers.CSVParser;
-import com.springproject.fileparserwebapp.parsers.XMLParser;
+import com.springproject.fileparserwebapp.parsers.*;
 import com.springproject.fileparserwebapp.repos.TransactionRepository;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
 @Component
 public class TransactionService {
-    private final TransactionRepository repository;
-    private final XMLParser xmlParser;
-    private final CSVParser csvParser;
+    private static final String XML_EXTENSION = "xml";
+    private static final String CSV_EXTENSION = "csv";
 
-    public TransactionService(TransactionRepository repository, XMLParser xmlParser, CSVParser csvParser) {
+    private final TransactionRepository repository;
+
+    public TransactionService(TransactionRepository repository) {
         this.repository = repository;
-        this.xmlParser = xmlParser;
-        this.csvParser = csvParser;
     }
 
     public List<Transaction> findAllTransactions() {
@@ -30,12 +30,22 @@ public class TransactionService {
         return repository.save(transactionToSave);
     }
 
-    public List<Transaction> parseAndSaveTransactionsFromXML() {
-        return (List<Transaction>) repository.saveAll(xmlParser.parseTransactionsFromXML());
+    public List<Transaction> parseFileAndSaveTransactions(File file) {
+        String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());
+        Parser parser = createParserSuitableForFile(fileExtension);
+        return (List<Transaction>) repository.saveAll(parser.parse(file));
     }
 
-    public List<Transaction> parseAndSaveTransactionsFromCSV() {
-        return (List<Transaction>) repository.saveAll(csvParser.parseTransactionsFromCSV());
+    private static Parser createParserSuitableForFile(String fileExtension) {
+        ParserFactory parserFactory;
+        Parser parser = new XMLParser();
+        if (fileExtension.equals(XML_EXTENSION)) {
+            parserFactory = new XMLParserFactory();
+            parser = parserFactory.createParser();
+        } else if (fileExtension.equals(CSV_EXTENSION)) {
+            parserFactory = new CSVParserFactory();
+            parser = parserFactory.createParser();
+        }
+        return parser;
     }
-
 }

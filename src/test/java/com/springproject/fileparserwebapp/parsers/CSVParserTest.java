@@ -1,19 +1,14 @@
 package com.springproject.fileparserwebapp.parsers;
 
-import com.springproject.fileparserwebapp.model.Transaction;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
 
 class CSVParserTest {
     @Test
     void parseCSV() {
-        CSVParser parser = new CSVParser();
-        List<Transaction> list = parser.parseTransactionsFromCSV();
-        for (Transaction transaction : list) {
-            System.out.println(transaction);
-        }
+        ParserFactory factory = new CSVParserFactory();
+        Parser CSVParser = factory.createParser();
+        System.out.println(CSVParser.parse(new File("src/main/resources/files_to_parse/csv_example.csv")));
     }
 }

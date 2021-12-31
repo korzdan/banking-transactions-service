@@ -16,11 +16,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 @Component
-public class XMLParser {
-
-    private static final String FILE_PATH = "src/main/resources/files_to_parse/xml_example.xml";
-
-    public ArrayList<Transaction> parseTransactionsFromXML() {
+public class XMLParser implements Parser {
+    @Override
+    public ArrayList<Transaction> parse(File file) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -29,7 +27,7 @@ public class XMLParser {
             builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(new File(FILE_PATH));
+            Document doc = documentBuilder.parse(file);
 
             NodeList listOfTransactions = doc.getElementsByTagName("transaction");
 

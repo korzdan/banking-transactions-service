@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TransactionServiceTest {
@@ -36,12 +36,8 @@ class TransactionServiceTest {
     }
 
     @Test
-    void parseAndSaveTransactionsFromXML() {
-        service.parseAndSaveTransactionsFromXML();
-    }
-
-    @Test
-    void parseAndSaveTransactionsFromCSV() {
-        service.parseAndSaveTransactionsFromCSV();
+    void parsing() {
+        File file = new File("src/main/resources/files_to_parse/xml_example.xml");
+        System.out.println(service.parseFileAndSaveTransactions(file));
     }
 }
