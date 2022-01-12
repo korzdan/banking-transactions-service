@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.repos;
 
-import com.springproject.fileparserwebapp.model.Transaction;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,13 +1,11 @@
-package com.springproject.fileparserwebapp.service;
+package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.model.Transaction;
-import com.springproject.fileparserwebapp.parsers.XMLParser;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +13,7 @@ import java.util.UUID;
 
 @SpringBootTest
 class TransactionServiceTest {
+
     @Autowired
     private TransactionService service;
 
@@ -36,8 +35,9 @@ class TransactionServiceTest {
     }
 
     @Test
-    void parsing() {
-        File file = new File("src/main/resources/files_to_parse/xml_example.xml");
-        System.out.println(service.parseFileAndSaveTransactions(file));
+    void parseUploadedFiles() {
+        if (service.parseUploadedFiles()) {
+            System.out.println("done successfully");
+        }
     }
 }

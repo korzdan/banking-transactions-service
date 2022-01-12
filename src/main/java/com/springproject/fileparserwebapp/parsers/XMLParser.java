@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
-import com.springproject.fileparserwebapp.model.Transaction;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;

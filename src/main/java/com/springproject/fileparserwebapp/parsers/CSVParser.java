@@ -2,7 +2,7 @@ package com.springproject.fileparserwebapp.parsers;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.springproject.fileparserwebapp.model.Transaction;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
