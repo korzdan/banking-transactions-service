@@ -27,6 +27,6 @@ class FileUploadServiceTest {
         MultipartFile secondMultipartFile = new MockMultipartFile("second.docx", "Spring Project.docx",
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document", new FileInputStream(secondFile));
         MultipartFile thirdMultipartFile = new MockMultipartFile("third.csv", "csv_example.csv", "text/csv", new FileInputStream(thirdFile));
-        assertEquals(2, fileUploadService.uploadFiles(firstMultipartFile, secondMultipartFile, thirdMultipartFile).size());
+        assertTrue(fileUploadService.uploadFiles(firstMultipartFile, secondMultipartFile, thirdMultipartFile));
     }
 }

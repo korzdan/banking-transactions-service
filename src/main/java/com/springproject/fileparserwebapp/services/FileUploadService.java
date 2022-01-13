@@ -17,15 +17,13 @@ public class FileUploadService {
     private String UPLOAD_PATH;
     private final Set<String> ALLOWED_FILE_EXTENSIONS = new HashSet<>(Arrays.asList("xml", "csv"));
 
-    public List<MultipartFile> uploadFiles(MultipartFile ... files) {
-        List<MultipartFile> uploadedFiles = new ArrayList<>();
+    public boolean uploadFiles(MultipartFile ... files) {
         for (MultipartFile file : files) {
             if (isAllowedExtension(file.getOriginalFilename())) {
                 writeFile(file);
-                uploadedFiles.add(file);
             }
         }
-        return uploadedFiles;
+        return true;
     }
 
     private boolean isAllowedExtension(String filename) {

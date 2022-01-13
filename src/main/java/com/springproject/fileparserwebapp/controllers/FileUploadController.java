@@ -20,7 +20,7 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     public ResponseEntity fileUpload(@RequestParam("files") MultipartFile[] files) {
-        return (fileUploadService.uploadFiles(files).size() > 0) && transactionService.parseUploadedFiles() ?
+        return fileUploadService.uploadFiles(files) && transactionService.parseUploadedFiles() ?
                 ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body("The files were successfully parsed"):
