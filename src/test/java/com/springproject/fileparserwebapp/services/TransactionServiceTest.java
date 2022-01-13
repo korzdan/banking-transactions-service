@@ -20,7 +20,8 @@ class TransactionServiceTest {
     @Test
     void findAllTransactions() {
         List<Transaction> list = service.findAllTransactions();
-        System.out.println(list);
+        int sizeOfArray = list.size();
+        Assertions.assertEquals(7, sizeOfArray);
     }
 
     @Test
@@ -36,8 +37,6 @@ class TransactionServiceTest {
 
     @Test
     void parseUploadedFiles() {
-        if (service.parseUploadedFiles()) {
-            System.out.println("done successfully");
-        }
+        Assertions.assertTrue(service.parseUploadedFiles());
     }
 }

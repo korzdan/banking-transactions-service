@@ -1,6 +1,7 @@
 package com.springproject.fileparserwebapp.parsers;
 
 import com.springproject.fileparserwebapp.models.Transaction;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +19,6 @@ class CSVParserTest {
     @Test
     void parse() {
         ArrayList<Transaction> listOfRecords = csvParser.parse(csvFile);
-        for (Transaction transaction : listOfRecords) {
-            System.out.println(transaction);
-        }
+        Assertions.assertEquals(5, listOfRecords.size());
     }
 }

@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class FileUploadService {
@@ -19,23 +17,15 @@ public class FileUploadService {
     private String UPLOAD_PATH;
     private final Set<String> ALLOWED_FILE_EXTENSIONS = new HashSet<>(Arrays.asList("xml", "csv"));
 
-    public boolean uploadFiles(MultipartFile ... files) {
-        if (isAllowedFilesUploaded(files)) {
-            for (MultipartFile file : files) {
-                writeFile(file);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private boolean isAllowedFilesUploaded(MultipartFile ... files) {
+    public List<MultipartFile> uploadFiles(MultipartFile ... files) {
+        List<MultipartFile> uploadedFiles = new ArrayList<>();
         for (MultipartFile file : files) {
-            if (!isAllowedExtension(file.getOriginalFilename())) {
-                return false;
+            if (isAllowedExtension(file.getOriginalFilename())) {
+                writeFile(file);
+                uploadedFiles.add(file);
             }
         }
-        return true;
+        return uploadedFiles;
     }
 
     private boolean isAllowedExtension(String filename) {
