@@ -2,16 +2,15 @@ package com.springproject.fileparserwebapp.parsers;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
+import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class ParserFactory {
     private static final String XML_EXTENSION = "xml";
     private static final String CSV_EXTENSION = "csv";
 
-    public Parser createParser(File file) {
-        String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());
+    public Parser createParser(MultipartFile file) {
+        String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (fileExtension.equals(XML_EXTENSION)) {
             return new XMLParser();
         }

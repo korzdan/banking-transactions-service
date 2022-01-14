@@ -5,9 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,9 @@ import java.util.UUID;
 @Component
 public class CSVParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(File file) {
+    public ArrayList<Transaction> parse(InputStream inputStream) {
         ArrayList<Transaction> listOfTransactions = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
             List<String[]> listOfRecords = csvReader.readAll();
             // Declaration of Transaction variables
             UUID transactionID;

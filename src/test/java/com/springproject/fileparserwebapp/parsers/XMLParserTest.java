@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 @SpringBootTest
@@ -17,8 +20,9 @@ class XMLParserTest {
     private XMLParser xmlParser;
 
     @Test
-    void parse() {
-        ArrayList<Transaction> listOfRecords = xmlParser.parse(xmlFile);
+    void parse() throws FileNotFoundException {
+        InputStream inputStream = new FileInputStream(xmlFile);
+        ArrayList<Transaction> listOfRecords = xmlParser.parse(inputStream);
         Assertions.assertEquals(2, listOfRecords.size());
     }
 }
