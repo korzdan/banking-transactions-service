@@ -1,0 +1,6 @@
+ALTER TABLE users
+    ADD role VARCHAR(20) NOT NULL DEFAULT 'ADMIN';
+
+ALTER TABLE users
+    ALTER COLUMN id SET DEFAULT gen_random_uuid(),
+    ALTER COLUMN password TYPE VARCHAR(255);

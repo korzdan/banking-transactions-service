@@ -6,6 +6,8 @@ import com.springproject.fileparserwebapp.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ public class FileUploadController {
     private final FileUploadService fileUploadService;
 
     @PostMapping("/upload")
+    @PreAuthorize("hasAuthority('admin:file_upload')")
     public ResponseEntity fileUpload(@RequestParam("files") MultipartFile[] files) {
         List<MultipartFile> allowedFiles = fileUploadService.uploadAllowedFiles(files);
         List<Transaction> transactionList = (List<Transaction>) transactionService.saveAllTransactions
