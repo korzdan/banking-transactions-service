@@ -24,7 +24,7 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     @PreAuthorize("hasAuthority('admin:file_upload')")
-    public ResponseEntity fileUpload(@RequestParam("files") MultipartFile[] files) {
+    public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
         List<MultipartFile> uploadedFiles = fileUploadService.uploadAllowedFiles(files);
         List<Transaction> transactionList = (List<Transaction>) transactionService.saveAllTransactions
                 (transactionService.parseUploadedFiles(uploadedFiles));
