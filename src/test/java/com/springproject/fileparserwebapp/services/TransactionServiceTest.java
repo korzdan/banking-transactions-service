@@ -5,8 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +26,8 @@ class TransactionServiceTest {
     @Test
     void findAllTransactions() {
         List<Transaction> list = service.findAllTransactions();
-        System.out.println(list);
+        int sizeOfArray = list.size();
+        Assertions.assertEquals(7, sizeOfArray);
     }
 
     @Test
@@ -35,9 +42,26 @@ class TransactionServiceTest {
     }
 
     @Test
-    void parseUploadedFiles() {
-        if (service.parseUploadedFiles()) {
-            System.out.println("done successfully");
-        }
+    void parseUploadedFiles() throws IOException {
+        // Finding appropriate files on the disk to parse
+        File firstFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\xml_example.xml");
+        File secondFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\csv_example.csv");
+        // Concerting the files to MultipartFile
+        MultipartFile firstMultipartFile = new MockMultipartFile("first.xml",
+                "xml_example.xml", "text/xml", new FileInputStream(firstFile));
+        MultipartFile secondMultipartFile = new MockMultipartFile("third.csv",
+                "csv_example.csv", "text/csv", new FileInputStream(secondFile));
+
+        List<MultipartFile> files = new ArrayList<>();
+        files.add(firstMultipartFile);
+        files.add(secondMultipartFile);
+
+        // Test of parsing uploaded files
+        List<Transaction> listOfTransactions = service.parseUploadedFiles(files);
+        Assertions.assertEquals(7, listOfTransactions.size());
+
+        // Test of saving parsed transactions to the Database
+        List<Transaction> listOfParsedTransactions = (List<Transaction>) service.saveAllTransactions(listOfTransactions);
+        Assertions.assertEquals(7, listOfParsedTransactions.size());
     }
 }

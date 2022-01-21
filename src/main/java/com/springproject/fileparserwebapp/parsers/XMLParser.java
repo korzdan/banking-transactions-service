@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Component
 public class XMLParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(File file) {
+    public ArrayList<Transaction> parse(InputStream inputStream) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -27,7 +28,7 @@ public class XMLParser implements Parser {
             builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(file);
+            Document doc = documentBuilder.parse(inputStream);
 
             NodeList listOfTransactions = doc.getElementsByTagName("transaction");
 

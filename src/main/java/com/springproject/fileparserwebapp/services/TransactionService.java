@@ -5,17 +5,16 @@ import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
 import com.springproject.fileparserwebapp.repos.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
-    @Value("${upload.path}")
-    private File uploadedFilesDir;
     private final TransactionRepository repository;
     private final ParserFactory parserFactory;
 
@@ -31,12 +30,16 @@ public class TransactionService {
         return repository.saveAll(transactions);
     }
 
-    public boolean parseUploadedFiles() {
-        File[] listOfFiles = uploadedFilesDir.listFiles();
-        for (File file : listOfFiles) {
-            Parser parser = parserFactory.createParser(file);
-            saveAllTransactions(parser.parse(file));
+    public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
+        List<Transaction> transactions = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                Parser parser = parserFactory.createParser(file);
+                transactions.addAll(parser.parse(file.getInputStream()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return true;
+        return transactions;
     }
 }
