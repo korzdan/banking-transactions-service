@@ -2,23 +2,21 @@ package com.springproject.fileparserwebapp.parsers;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.springproject.fileparserwebapp.model.Transaction;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Component
-public class CSVParser {
-    private static final String FILE_PATH = "src/main/resources/files_to_parse/csv_example.csv";
-
-    public ArrayList<Transaction> parseTransactionsFromCSV() {
+public class CSVParser implements Parser {
+    @Override
+    public ArrayList<Transaction> parse(InputStream inputStream) {
         ArrayList<Transaction> listOfTransactions = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(FILE_PATH))) {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
             List<String[]> listOfRecords = csvReader.readAll();
             // Declaration of Transaction variables
             UUID transactionID;

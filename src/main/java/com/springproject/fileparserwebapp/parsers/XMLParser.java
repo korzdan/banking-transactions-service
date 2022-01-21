@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
-import com.springproject.fileparserwebapp.model.Transaction;
+import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -11,16 +11,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @Component
-public class XMLParser {
-
-    private static final String FILE_PATH = "src/main/resources/files_to_parse/xml_example.xml";
-
-    public ArrayList<Transaction> parseTransactionsFromXML() {
+public class XMLParser implements Parser {
+    @Override
+    public ArrayList<Transaction> parse(InputStream inputStream) {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -29,7 +28,7 @@ public class XMLParser {
             builderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
 
             DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(new File(FILE_PATH));
+            Document doc = documentBuilder.parse(inputStream);
 
             NodeList listOfTransactions = doc.getElementsByTagName("transaction");
 
