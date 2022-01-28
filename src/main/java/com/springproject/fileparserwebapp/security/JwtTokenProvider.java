@@ -1,14 +1,13 @@
 package com.springproject.fileparserwebapp.security;
 
+import com.springproject.fileparserwebapp.services.UserService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,8 +19,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Qualifier("userDetailsServiceImpl")
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Value("${jwt.header}")
     private String AUTHORIZATION_HEADER;
@@ -60,7 +58,7 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = this.userService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

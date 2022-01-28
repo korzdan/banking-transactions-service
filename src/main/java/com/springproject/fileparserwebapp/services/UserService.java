@@ -1,4 +1,4 @@
-package com.springproject.fileparserwebapp.security;
+package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
+        return userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User doesn't exist..."));
-        return SecurityUser.fromUser(user);
     }
 }
