@@ -28,14 +28,14 @@ public class JwtTokenFilter extends GenericFilterBean {
             setAuthentication(token);
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse)servletRequest).sendError(e.getHttpStatus().value());
+            ((HttpServletResponse)servletResponse).sendError(401, "Unauthorized");
         } finally {
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
     private void setAuthentication(String token) throws JwtAuthenticationException {
-        if (token != null && jwtTokenProvider.validateToken(token)) {
+        if (jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
