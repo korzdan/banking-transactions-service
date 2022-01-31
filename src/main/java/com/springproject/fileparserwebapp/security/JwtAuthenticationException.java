@@ -2,15 +2,11 @@ package com.springproject.fileparserwebapp.security;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import javax.naming.AuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 
 @Getter
 public class JwtAuthenticationException extends AuthenticationException {
-    private HttpStatus httpStatus;
-
-    public JwtAuthenticationException(String msg) {
-        super(msg);
-    }
+    private final HttpStatus httpStatus;
 
     public JwtAuthenticationException(String msg, HttpStatus httpStatus) {
         super(msg);

@@ -1,6 +1,5 @@
 package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
