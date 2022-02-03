@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
+import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
@@ -32,14 +33,25 @@ public class TransactionService {
 
     public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
         List<Transaction> transactions = new ArrayList<>();
-        try {
-            for (MultipartFile file : files) {
+        // StringBuilder for collecting information about exceptions
+        StringBuilder errorLog = new StringBuilder();
+
+        // Parsing files and catching invalid files
+        for (MultipartFile file : files) {
+            try {
                 Parser parser = parserFactory.createParser(file);
                 transactions.addAll(parser.parse(file.getInputStream()));
+            } catch (IOException e) {
+                errorLog.append("Cannot get InputStream from " + file.getOriginalFilename());
+            } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+                errorLog.append(file.getOriginalFilename() + " is invalid. ");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        // Save parsed transactions to the database
+        repository.saveAll(transactions);
+
+        if (errorLog.length() != 0) throw new ApiRequestExceptions(errorLog.toString());
         return transactions;
     }
 }

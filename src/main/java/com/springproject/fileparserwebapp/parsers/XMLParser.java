@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
+import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
@@ -9,7 +10,6 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -45,16 +45,17 @@ public class XMLParser implements Parser {
                 // Getting values to generate new Transaction
                 UUID transactionID = UUID.fromString(getTagValue("id", transactionElement));
                 UUID userID = UUID.fromString(getTagValue("id", userElement));
+                if (transactionID.equals(userID)) {
+                    throw new NullPointerException();
+                }
                 Timestamp timestamp = Timestamp.valueOf(getTagValue("timestamp", transactionElement));
                 long amount = removeSpacesInAmountProperty(getTagValue("amount", paymentElement));
                 String currency = getTagValue("currency", paymentElement);
                 String status = getTagValue("status", transactionElement);
-
                 parsedTransactions.add(new Transaction(transactionID, userID, timestamp, amount, currency, status));
             }
-            return parsedTransactions;
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            throw new ApiRequestExceptions("Unidentified file mistake.");
         }
         return parsedTransactions;
     }

@@ -21,11 +21,11 @@ import java.util.UUID;
 class TransactionServiceTest {
 
     @Autowired
-    private TransactionService service;
+    private TransactionService transactionService;
 
     @Test
     void findAllTransactions() {
-        List<Transaction> list = service.findAllTransactions();
+        List<Transaction> list = transactionService.findAllTransactions();
         int sizeOfArray = list.size();
         Assertions.assertEquals(7, sizeOfArray);
     }
@@ -37,7 +37,7 @@ class TransactionServiceTest {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Transaction newTransaction = new Transaction(transactionUUID, userUUID, timestamp,
                 10643, "USD", "FAILURE");
-        Transaction returnedTransaction = service.saveTransaction(newTransaction);
+        Transaction returnedTransaction = transactionService.saveTransaction(newTransaction);
         Assertions.assertEquals(newTransaction.getAmount(), returnedTransaction.getAmount());
     }
 
@@ -57,11 +57,11 @@ class TransactionServiceTest {
         files.add(secondMultipartFile);
 
         // Test of parsing uploaded files
-        List<Transaction> listOfTransactions = service.parseUploadedFiles(files);
+        List<Transaction> listOfTransactions = transactionService.parseUploadedFiles(files);
         Assertions.assertEquals(7, listOfTransactions.size());
 
         // Test of saving parsed transactions to the Database
-        List<Transaction> listOfParsedTransactions = (List<Transaction>) service.saveAllTransactions(listOfTransactions);
+        List<Transaction> listOfParsedTransactions = (List<Transaction>) transactionService.saveAllTransactions(listOfTransactions);
         Assertions.assertEquals(7, listOfParsedTransactions.size());
     }
 }

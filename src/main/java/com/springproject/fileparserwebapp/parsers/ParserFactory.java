@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
+import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,12 +12,15 @@ public class ParserFactory {
 
     public Parser createParser(MultipartFile file) {
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (fileExtension == null) {
+            throw new ApiRequestExceptions("A mistake with file extension.");
+        }
         if (fileExtension.equals(XML_EXTENSION)) {
             return new XMLParser();
         }
         if (fileExtension.equals(CSV_EXTENSION)) {
             return new CSVParser();
         }
-        throw new RuntimeException("Parser is not created");
+        throw new ApiRequestExceptions("A parser wasn't created.");
     }
 }
