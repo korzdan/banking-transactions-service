@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.controllers;
 
+import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.services.FileUploadService;
 import com.springproject.fileparserwebapp.services.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 
 
 @RestController
@@ -21,11 +23,11 @@ public class FileUploadController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
-        transactionService.parseUploadedFiles(
+        List<Transaction> transactionList = transactionService.parseUploadedFiles(
                 fileUploadService.uploadAllowedFiles(files)
         );
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("The files were successfully parsed.");
+                .body(transactionList);
     }
 }

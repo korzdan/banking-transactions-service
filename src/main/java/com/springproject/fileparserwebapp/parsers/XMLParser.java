@@ -1,6 +1,7 @@
 package com.springproject.fileparserwebapp.parsers;
 
-import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
+import com.springproject.fileparserwebapp.exception.FileParserException;
+import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
@@ -46,7 +47,7 @@ public class XMLParser implements Parser {
                 UUID transactionID = UUID.fromString(getTagValue("id", transactionElement));
                 UUID userID = UUID.fromString(getTagValue("id", userElement));
                 if (transactionID.equals(userID)) {
-                    throw new NullPointerException();
+                    throw new InvalidFileException("File is invalid.");
                 }
                 Timestamp timestamp = Timestamp.valueOf(getTagValue("timestamp", transactionElement));
                 long amount = removeSpacesInAmountProperty(getTagValue("amount", paymentElement));
@@ -55,7 +56,7 @@ public class XMLParser implements Parser {
                 parsedTransactions.add(new Transaction(transactionID, userID, timestamp, amount, currency, status));
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new ApiRequestExceptions("Unidentified file mistake.");
+            throw new FileParserException("File cannot be parsed.");
         }
         return parsedTransactions;
     }

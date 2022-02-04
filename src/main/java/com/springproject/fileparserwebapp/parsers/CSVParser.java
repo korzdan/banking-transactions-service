@@ -2,7 +2,7 @@ package com.springproject.fileparserwebapp.parsers;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
+import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class CSVParser implements Parser {
                 listOfTransactions.add(new Transaction(transactionID, userID, timestamp, amount, currency, status));
             }
         } catch (IOException | CsvException e) {
-            throw new ApiRequestExceptions("Unidentified file mistake.");
+            throw new FileParserException("File cannot be parsed.");
         }
         return listOfTransactions;
     }

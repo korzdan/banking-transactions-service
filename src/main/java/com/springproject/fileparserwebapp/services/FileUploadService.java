@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
+import com.springproject.fileparserwebapp.exception.FileWritingException;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class FileUploadService {
             Path path = Paths.get(UPLOAD_FILE_DIR + "/" + file.getOriginalFilename());
             Files.write(path, bytes);
         } catch (IOException e) {
-            throw new ApiRequestExceptions("Exception with writing file on the server.");
+            throw new FileWritingException("Exception with writing file on the server.");
         }
         return file;
     }

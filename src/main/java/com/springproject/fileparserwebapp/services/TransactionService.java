@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.exception.ApiRequestExceptions;
+import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
@@ -51,7 +51,7 @@ public class TransactionService {
         // Save parsed transactions to the database
         repository.saveAll(transactions);
 
-        if (errorLog.length() != 0) throw new ApiRequestExceptions(errorLog.toString());
+        if (errorLog.length() != 0) throw new InvalidFileException(errorLog.toString());
         return transactions;
     }
 }
