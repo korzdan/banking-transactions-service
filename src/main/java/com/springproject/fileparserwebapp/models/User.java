@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -16,7 +15,7 @@ import java.util.UUID;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
     private String username;
     private String password;
     @Enumerated(value = EnumType.STRING)
@@ -25,14 +24,6 @@ public class User implements UserDetails {
     private Status status;
 
     public User() {}
-
-    public User(UUID id, String username, String password, Role role, Status status) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.status = status;
-    }
 
     @Override
     public String getPassword() {

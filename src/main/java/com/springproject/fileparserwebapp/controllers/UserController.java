@@ -18,7 +18,7 @@ public class UserController {
     private final UserRepository userRepository;
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('admin:execute_command')")
+    @PreAuthorize("hasAuthority('execute_command')")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }

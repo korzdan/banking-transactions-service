@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum Permission {
-    FILE_UPLOAD("admin:file_upload"),
-    EXECUTE_COMMAND("admin:execute_command");
+    FILE_UPLOAD("file_upload"),
+    EXECUTE_COMMAND("execute_command");
 
     private final String permission;
 }

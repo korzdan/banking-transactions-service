@@ -4,7 +4,6 @@ import com.springproject.fileparserwebapp.services.UserService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,15 +21,15 @@ public class JwtTokenProvider {
     private final UserService userService;
 
     @Value("${jwt.header}")
-    private String AUTHORIZATION_HEADER;
+    private String authorizationHeader;
     @Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private String secretKey;
     @Value("${jwt.expiration}")
-    private Long VALIDITY_IN_MILLS;
+    private Long validityInMills;
 
     @PostConstruct
     protected void init() {
-        SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
 
@@ -38,22 +37,22 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + VALIDITY_IN_MILLS * 1000);
+        Date validity = new Date(now.getTime() + validityInMills * 1000);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
     public boolean validateToken(String token) throws JwtAuthenticationException {
         try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid", HttpStatus.UNAUTHORIZED);
+            throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
     }
 
@@ -63,10 +62,10 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
     public String resolveToken(HttpServletRequest request) {
-         return request.getHeader(AUTHORIZATION_HEADER);
+         return request.getHeader(authorizationHeader);
     }
 }

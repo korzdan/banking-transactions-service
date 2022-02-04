@@ -15,7 +15,7 @@ import java.util.*;
 public class FileUploadService {
     private final Set<String> ALLOWED_FILE_EXTENSIONS = new HashSet<>(Arrays.asList("xml", "csv"));
     @Value("${upload.path}")
-    private String UPLOAD_FILE_DIR;
+    private String uploadPath;
 
     public List<MultipartFile> uploadAllowedFiles(MultipartFile ... files) {
         List<MultipartFile> allowedFiles = new ArrayList<>();
@@ -34,7 +34,7 @@ public class FileUploadService {
     private MultipartFile writeMultipartFileOnDisk(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOAD_FILE_DIR + "/" + file.getOriginalFilename());
+            Path path = Paths.get(uploadPath + "/" + file.getOriginalFilename());
             Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();

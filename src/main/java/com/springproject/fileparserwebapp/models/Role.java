@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 public enum Role {
-    ADMIN(Set.of(Permission.EXECUTE_COMMAND, Permission.FILE_UPLOAD)),
-    USER(Set.of());
+    MANAGER(Set.of(Permission.EXECUTE_COMMAND, Permission.FILE_UPLOAD)),
+    OPERATOR(Set.of(Permission.FILE_UPLOAD));
 
     private final Set<Permission> permissions;
 
