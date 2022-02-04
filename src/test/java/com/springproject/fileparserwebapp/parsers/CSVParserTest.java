@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
+import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,24 +12,26 @@ import java.util.ArrayList;
 class CSVParserTest {
 
     private CSVParser csvParser;
+    private File csvFile;
+    private File csvExceptionFile;
 
     @BeforeEach
     void setUp() {
         csvParser = new CSVParser();
+        csvFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\csv_example.csv");
+        csvExceptionFile = new File("C:\\Users\\korzu\\Desktop\\csv_exception.csv");
     }
 
     @Test
-    void parse() throws FileNotFoundException {
-        File csvFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\csv_example.csv");
-        InputStream inputStream = new FileInputStream(csvFile);
-        ArrayList<Transaction> listOfRecords = csvParser.parse(inputStream);
+    void Return5_When_CsvFileIsParsed() throws FileNotFoundException {
+        ArrayList<Transaction> listOfRecords = csvParser.parse(new FileInputStream(csvFile));
         Assertions.assertEquals(5, listOfRecords.size());
     }
 
     @Test
-    void parseInvalidCsvFile() {
-        File invalidCsvFile = new File("C:\\Users\\korzu\\Desktop\\csv_exception.csv");
-        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () ->
-                csvParser.parse(new FileInputStream(invalidCsvFile)));
+    void ThrowsInvalidFileException_ForIncorrectFile() {
+        InvalidFileException exception = Assertions.assertThrows(InvalidFileException.class, () ->
+                csvParser.parse(new FileInputStream(csvExceptionFile)));
+        Assertions.assertEquals(" has some null values: it cannot be parsed.", exception.getMessage());
     }
 }

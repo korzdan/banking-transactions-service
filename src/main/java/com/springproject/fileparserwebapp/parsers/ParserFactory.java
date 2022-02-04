@@ -12,15 +12,12 @@ public class ParserFactory {
 
     public Parser createParser(MultipartFile file) {
         String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (fileExtension == null) {
-            throw new InvalidFileException("Unidentified file extension.");
-        }
         if (fileExtension.equals(XML_EXTENSION)) {
             return new XMLParser();
         }
         if (fileExtension.equals(CSV_EXTENSION)) {
             return new CSVParser();
         }
-        throw new InvalidFileException("A parser wasn't created.");
+        throw new InvalidFileException(" has invalid file extension. Parser was not created.");
     }
 }

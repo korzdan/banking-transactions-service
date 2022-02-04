@@ -19,13 +19,12 @@ public class FileUploadService {
     private String UPLOAD_FILE_DIR;
 
     public List<MultipartFile> uploadAllowedFiles(MultipartFile ... files) {
-        List<MultipartFile> allowedFiles = new ArrayList<>();
         for (MultipartFile file : files) {
             if (isAllowedExtension(file.getOriginalFilename())) {
-                allowedFiles.add(writeMultipartFileOnDisk(file));
+                writeMultipartFileOnDisk(file);
             }
         }
-        return allowedFiles;
+        return Arrays.asList(files);
     }
 
     private boolean isAllowedExtension(String filename) {

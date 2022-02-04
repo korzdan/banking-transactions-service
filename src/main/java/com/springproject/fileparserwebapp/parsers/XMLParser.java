@@ -20,7 +20,7 @@ import java.util.UUID;
 @Component
 public class XMLParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(InputStream inputStream) {
+    public ArrayList<Transaction> parse(InputStream inputStream) throws InvalidFileException, FileParserException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -47,7 +47,7 @@ public class XMLParser implements Parser {
                 UUID transactionID = UUID.fromString(getTagValue("id", transactionElement));
                 UUID userID = UUID.fromString(getTagValue("id", userElement));
                 if (transactionID.equals(userID)) {
-                    throw new InvalidFileException("File is invalid.");
+                    throw new InvalidFileException(" has some null values: it cannot be parsed.");
                 }
                 Timestamp timestamp = Timestamp.valueOf(getTagValue("timestamp", transactionElement));
                 long amount = removeSpacesInAmountProperty(getTagValue("amount", paymentElement));
@@ -56,13 +56,17 @@ public class XMLParser implements Parser {
                 parsedTransactions.add(new Transaction(transactionID, userID, timestamp, amount, currency, status));
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new FileParserException("File cannot be parsed.");
+            throw new FileParserException(" cannot be parsed: file is invalid.");
         }
         return parsedTransactions;
     }
 
     private static String getTagValue(String tag, Element element) {
-        return element.getElementsByTagName(tag).item(0).getTextContent();
+        try {
+            return element.getElementsByTagName(tag).item(0).getTextContent();
+        } catch (NullPointerException e) {
+            throw new InvalidFileException(" has some null values: it cannot be parsed.");
+        }
     }
 
     private static Long removeSpacesInAmountProperty(String amountString) {

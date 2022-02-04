@@ -1,10 +1,15 @@
 package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.models.Transaction;
+import com.springproject.fileparserwebapp.parsers.ParserFactory;
+import com.springproject.fileparserwebapp.repos.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,52 +21,74 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TransactionServiceTest {
 
-    @Autowired
+    @Mock
+    private TransactionRepository transactionRepository;
     private TransactionService transactionService;
 
-    @Test
-    void findAllTransactions() {
-        List<Transaction> list = transactionService.findAllTransactions();
-        int sizeOfArray = list.size();
-        Assertions.assertEquals(7, sizeOfArray);
+    private Transaction transactionToSave;
+    private File xmlFile;
+    private File csvFile;
+
+    @BeforeEach
+    void setUp() {
+        transactionService = new TransactionService(transactionRepository, new ParserFactory());
+        transactionToSave = new Transaction(
+                UUID.fromString("a4eeeb80-14fc-4142-b87d-e88386438a1b"),
+                UUID.fromString("b8e85137-4f3b-4a30-98f8-8be312ba74c6"),
+                new Timestamp(System.currentTimeMillis()),
+                10643,
+                "USD",
+                "FAILURE");
+        xmlFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\xml_example.xml");
+        csvFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\csv_example.csv");
     }
 
     @Test
-    void saveTransaction() {
-        UUID transactionUUID = UUID.fromString("a4eeeb80-14fc-4142-b87d-e88386438a1b");
-        UUID userUUID = UUID.fromString("b8e85137-4f3b-4a30-98f8-8be312ba74c6");
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Transaction newTransaction = new Transaction(transactionUUID, userUUID, timestamp,
-                10643, "USD", "FAILURE");
-        Transaction returnedTransaction = transactionService.saveTransaction(newTransaction);
-        Assertions.assertEquals(newTransaction.getAmount(), returnedTransaction.getAmount());
+    void VerifyInvocationFindAllInRepo_WhenInvokeMethodInService() {
+        transactionService.findAllTransactions();
+        verify(transactionRepository).findAll();
     }
 
     @Test
-    void parseUploadedFiles() throws IOException {
-        // Finding appropriate files on the disk to parse
-        File firstFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\xml_example.xml");
-        File secondFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\csv_example.csv");
-        // Concerting the files to MultipartFile
+    void CapturedTransaction_EqualsTo_SavedTransaction() {
+        transactionService.saveTransaction(transactionToSave);
+        ArgumentCaptor<Transaction> transactionArgumentCaptor =
+                ArgumentCaptor.forClass(Transaction.class);
+        verify(transactionRepository).save(transactionArgumentCaptor.capture());
+
+        Transaction capturedTransaction = transactionArgumentCaptor.getValue();
+        Assertions.assertEquals(transactionToSave, capturedTransaction);
+    }
+
+    @Test
+    void CapturedList_EqualsTo_SavedListOfTransactions() {
+        transactionService.saveAllTransactions(List.of(transactionToSave));
+        ArgumentCaptor<List<Transaction>> listArgumentCaptor =
+                ArgumentCaptor.forClass(List.class);
+        verify(transactionRepository).saveAll(listArgumentCaptor.capture());
+
+        List<Transaction> capturedList = listArgumentCaptor.getValue();
+        Assertions.assertEquals(List.of(transactionToSave), capturedList);
+    }
+
+    @Test
+    void VerifyInvocationOfSaveAll_WhenParsingUploadedFiles() throws IOException {
         MultipartFile firstMultipartFile = new MockMultipartFile("first.xml",
-                "xml_example.xml", "text/xml", new FileInputStream(firstFile));
-        MultipartFile secondMultipartFile = new MockMultipartFile("third.csv",
-                "csv_example.csv", "text/csv", new FileInputStream(secondFile));
+                "xml_example.xml", "text/xml", new FileInputStream(xmlFile));
+        MultipartFile secondMultipartFile = new MockMultipartFile("second.csv",
+                "csv_example.csv", "text/csv", new FileInputStream(csvFile));
 
         List<MultipartFile> files = new ArrayList<>();
         files.add(firstMultipartFile);
         files.add(secondMultipartFile);
 
-        // Test of parsing uploaded files
-        List<Transaction> listOfTransactions = transactionService.parseUploadedFiles(files);
-        Assertions.assertEquals(7, listOfTransactions.size());
-
-        // Test of saving parsed transactions to the Database
-        List<Transaction> listOfParsedTransactions = (List<Transaction>) transactionService.saveAllTransactions(listOfTransactions);
-        Assertions.assertEquals(7, listOfParsedTransactions.size());
+        List<Transaction> transactionList = transactionService.parseUploadedFiles(files);
+        verify(transactionRepository, times(1)).saveAll(transactionList);
     }
 }

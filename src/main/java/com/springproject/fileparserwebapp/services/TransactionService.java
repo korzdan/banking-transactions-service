@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
+import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
@@ -42,9 +43,9 @@ public class TransactionService {
                 Parser parser = parserFactory.createParser(file);
                 transactions.addAll(parser.parse(file.getInputStream()));
             } catch (IOException e) {
-                errorLog.append("Cannot get InputStream from " + file.getOriginalFilename());
-            } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
-                errorLog.append(file.getOriginalFilename() + " is invalid. ");
+                errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
+            } catch (FileParserException | InvalidFileException e) {
+                errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
             }
         }
 
