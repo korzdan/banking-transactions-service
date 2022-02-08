@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.parsers;
 
+import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,6 @@ public class ParserFactory {
         if (fileExtension.equals(CSV_EXTENSION)) {
             return new CSVParser();
         }
-        throw new RuntimeException("Parser is not created");
+        throw new InvalidFileException(" has invalid file extension. Parser was not created.");
     }
 }

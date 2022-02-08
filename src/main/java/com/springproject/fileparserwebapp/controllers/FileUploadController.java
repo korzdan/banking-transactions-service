@@ -22,16 +22,12 @@ public class FileUploadController {
     private final FileUploadService fileUploadService;
 
     @PostMapping("/upload")
-    public ResponseEntity fileUpload(@RequestParam("files") MultipartFile[] files) {
-        List<MultipartFile> allowedFiles = fileUploadService.uploadAllowedFiles(files);
-        List<Transaction> transactionList = (List<Transaction>) transactionService.saveAllTransactions
-                (transactionService.parseUploadedFiles(allowedFiles));
-        return !(transactionList.isEmpty()) ?
-                ResponseEntity
-                        .status(HttpStatus.CREATED)
-                        .body("The files were successfully parsed") :
-                ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body("A mistake with files...");
+    public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
+        List<Transaction> transactionList = transactionService.parseUploadedFiles(
+                fileUploadService.uploadAllowedFiles(files)
+        );
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(transactionList);
     }
 }

@@ -1,5 +1,7 @@
 package com.springproject.fileparserwebapp.parsers;
 
+import com.springproject.fileparserwebapp.exception.FileParserException;
+import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
@@ -9,7 +11,6 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Component
 public class XMLParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(InputStream inputStream) {
+    public ArrayList<Transaction> parse(InputStream inputStream) throws InvalidFileException, FileParserException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -45,22 +46,27 @@ public class XMLParser implements Parser {
                 // Getting values to generate new Transaction
                 UUID transactionID = UUID.fromString(getTagValue("id", transactionElement));
                 UUID userID = UUID.fromString(getTagValue("id", userElement));
+                if (transactionID.equals(userID)) {
+                    throw new InvalidFileException(" has some null values: it cannot be parsed.");
+                }
                 Timestamp timestamp = Timestamp.valueOf(getTagValue("timestamp", transactionElement));
                 long amount = removeSpacesInAmountProperty(getTagValue("amount", paymentElement));
                 String currency = getTagValue("currency", paymentElement);
                 String status = getTagValue("status", transactionElement);
-
                 parsedTransactions.add(new Transaction(transactionID, userID, timestamp, amount, currency, status));
             }
-            return parsedTransactions;
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            throw new FileParserException(" cannot be parsed: file is invalid.");
         }
         return parsedTransactions;
     }
 
     private static String getTagValue(String tag, Element element) {
-        return element.getElementsByTagName(tag).item(0).getTextContent();
+        try {
+            return element.getElementsByTagName(tag).item(0).getTextContent();
+        } catch (NullPointerException e) {
+            throw new InvalidFileException(" has some null values: it cannot be parsed.");
+        }
     }
 
     private static Long removeSpacesInAmountProperty(String amountString) {
