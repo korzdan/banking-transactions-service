@@ -27,6 +27,11 @@ class ParserFactoryTest {
                 "xml_example.xml", "text/xml", new FileInputStream(firstFile));
         MultipartFile secondMultipartFile = new MockMultipartFile("third.csv",
                 "csv_example.csv", "text/csv", new FileInputStream(secondFile));
+
+        // Imitate adding new types at a runtime
+        factory.addNewParser("xml", XMLParser.class);
+        factory.addNewParser("csv", CSVParser.class);
+
         Parser xmlParser = factory.createParser(firstMultipartFile);
         Parser csvParser = factory.createParser(secondMultipartFile);
 

@@ -10,18 +10,17 @@ import java.util.Map;
 
 @Component
 public class ParserFactory {
-    private static final Map<String, Class<? extends Parser>> availableParser = new HashMap<>();
+    private final Map<String, Class<? extends Parser>> availableParsers = new HashMap<>();
 
-    static {
-        availableParser.put("xml", XMLParser.class);
-        availableParser.put("csv", CSVParser.class);
+    public Class<?> addNewParser(String type, Class<? extends Parser> newClass) {
+        return availableParsers.put(type, newClass);
     }
 
     public Parser createParser(MultipartFile file) {
         try {
             String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-            Class<?> theClass = availableParser.get(fileExtension);
-            Constructor parserConstructor = theClass.getDeclaredConstructor();
+            Class<?> appropriateClass = availableParsers.get(fileExtension);
+            Constructor parserConstructor = appropriateClass.getDeclaredConstructor();
             return (Parser) parserConstructor.newInstance(new Object[] {});
         } catch (Exception e) {
             // TODO: Handle the exception in the right way
