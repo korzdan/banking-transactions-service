@@ -25,6 +25,12 @@ public class User implements UserDetails {
 
     public User() {}
 
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public String getPassword() {
         return password;

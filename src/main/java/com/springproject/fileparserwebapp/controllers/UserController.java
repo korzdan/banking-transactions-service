@@ -1,7 +1,7 @@
 package com.springproject.fileparserwebapp.controllers;
 
 import com.springproject.fileparserwebapp.models.User;
-import com.springproject.fileparserwebapp.repos.UserRepository;
+import com.springproject.fileparserwebapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('execute_command')")
     public ResponseEntity<List<User>> getAllUsers() {
-        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
 }
