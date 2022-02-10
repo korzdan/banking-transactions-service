@@ -6,6 +6,7 @@ import com.springproject.fileparserwebapp.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,12 +23,17 @@ public class FileUploadController {
     private final FileUploadService fileUploadService;
 
     @PostMapping("/upload")
+    @PreAuthorize("hasAuthority('file_upload')")
     public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
-        List<Transaction> transactionList = transactionService.parseUploadedFiles(
-                fileUploadService.uploadAllowedFiles(files)
-        );
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(transactionList);
+        List<MultipartFile> uploadedFiles = fileUploadService.uploadAllowedFiles(files);
+        List<Transaction> transactionList = (List<Transaction>) transactionService.saveAllTransactions
+                (transactionService.parseUploadedFiles(uploadedFiles));
+        return !(transactionList.isEmpty()) ?
+                ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body("The files were successfully parsed") :
+                ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("A mistake with files...");
     }
 }
