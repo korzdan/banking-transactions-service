@@ -34,7 +34,7 @@ public class TransactionService {
         List<Transaction> transactions = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
-                Parser parser = parserFactory.createParser(file);
+                Parser parser = parserFactory.getParser(file);
                 transactions.addAll(parser.parse(file.getInputStream()));
             }
         } catch (IOException e) {

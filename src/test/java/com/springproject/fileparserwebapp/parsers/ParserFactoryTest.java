@@ -17,6 +17,8 @@ class ParserFactoryTest {
 
     private ParserFactory factory = new ParserFactory();
 
+    // TODO: WILL TEST EVERYTHING CORRECTLY AFTER CREATING APPROPRIATE PR
+
     @Test
     void createParser() throws IOException {
         MultipartFile firstMultipartFile = new MockMultipartFile("first.xml",
@@ -24,8 +26,8 @@ class ParserFactoryTest {
         MultipartFile secondMultipartFile = new MockMultipartFile("third.csv",
                 "csv_example.csv", "text/csv", new FileInputStream(secondFile));
 
-        Parser xmlParser = factory.createParser(firstMultipartFile);
-        Parser csvParser = factory.createParser(secondMultipartFile);
+        Parser xmlParser = factory.getParser(firstMultipartFile);
+        Parser csvParser = factory.getParser(secondMultipartFile);
 
         assertEquals(XMLParser.class, xmlParser.getClass());
         assertEquals(CSVParser.class, csvParser.getClass());
