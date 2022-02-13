@@ -18,4 +18,5 @@ public class ExceptionsHandler {
     public ResponseEntity<Object> handleFileParserAndFileWritingExceptions(RuntimeException e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }
