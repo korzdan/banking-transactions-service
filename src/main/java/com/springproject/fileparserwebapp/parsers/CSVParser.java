@@ -47,4 +47,9 @@ public class CSVParser implements Parser {
         }
         return listOfTransactions;
     }
+
+    @Override
+    public String getAppropriateExtension() {
+        return "csv";
+    }
 }
