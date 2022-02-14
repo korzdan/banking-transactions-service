@@ -61,6 +61,11 @@ public class XMLParser implements Parser {
         return parsedTransactions;
     }
 
+    @Override
+    public String getAppropriateExtension() {
+        return "xml";
+    }
+
     private static String getTagValue(String tag, Element element) {
         try {
             return element.getElementsByTagName(tag).item(0).getTextContent();

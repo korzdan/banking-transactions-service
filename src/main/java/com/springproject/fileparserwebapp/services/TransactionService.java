@@ -1,7 +1,5 @@
 package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.exception.FileParserException;
-import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
@@ -34,25 +32,14 @@ public class TransactionService {
 
     public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
         List<Transaction> transactions = new ArrayList<>();
-        // StringBuilder for collecting information about exceptions
-        StringBuilder errorLog = new StringBuilder();
-
-        // Parsing files and catching invalid files
-        for (MultipartFile file : files) {
-            try {
-                Parser parser = parserFactory.createParser(file);
+        try {
+            for (MultipartFile file : files) {
+                Parser parser = parserFactory.getParser(file);
                 transactions.addAll(parser.parse(file.getInputStream()));
-            } catch (IOException e) {
-                errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
-            } catch (FileParserException | InvalidFileException e) {
-                errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // Save parsed transactions to the database
-        repository.saveAll(transactions);
-
-        if (errorLog.length() != 0) throw new InvalidFileException(errorLog.toString());
         return transactions;
     }
 }
