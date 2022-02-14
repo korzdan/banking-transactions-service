@@ -18,19 +18,20 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
-    private final TransactionRepository repository;
+    private final TransactionRepository transactionRepository;
+    private final ErrorService errorService;
     private final ParserFactory parserFactory;
 
     public List<Transaction> findAllTransactions() {
-        return repository.findAll();
+        return transactionRepository.findAll();
     }
 
     public Transaction saveTransaction(Transaction transactionToSave) {
-        return repository.save(transactionToSave);
+        return transactionRepository.save(transactionToSave);
     }
 
     public Iterable<Transaction> saveAllTransactions(List<Transaction> transactions) {
-        return repository.saveAll(transactions);
+        return transactionRepository.saveAll(transactions);
     }
 
     public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
@@ -46,12 +47,14 @@ public class TransactionService {
             } catch (IOException e) {
                 errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
             } catch (FileParserException | InvalidFileException | ParserNotFound e) {
+                String messageToDatabase = file.getOriginalFilename() + e.getMessage();
+                errorService.saveError(errorService.createError(e, messageToDatabase));
                 errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
             }
         }
 
         // Save parsed transactions to the database
-        repository.saveAll(transactions);
+        transactionRepository.saveAll(transactions);
 
         if (errorLog.length() != 0) {
             errorLog.append(" Other files have been parsed.");

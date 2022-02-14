@@ -14,10 +14,16 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler(value = {FileParserException.class, FileWritingException.class})
-    public ResponseEntity<Object> handleFileParserAndFileWritingExceptions(RuntimeException e) {
+    @ExceptionHandler(FileParserException.class)
+    public ResponseEntity<Object> handleFileParserException(RuntimeException e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(FileWritingException.class)
+    public ResponseEntity<Object> handleFileWritingException(FileWritingException e) {
+        return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     @ExceptionHandler(ParserNotFound.class)
     public ResponseEntity<Object> handleParserNotFoundException(ParserNotFound e) {
