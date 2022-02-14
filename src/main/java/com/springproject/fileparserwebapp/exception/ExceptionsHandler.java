@@ -19,4 +19,9 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(ParserNotFound.class)
+    public ResponseEntity<Object> handleParserNotFoundException(ParserNotFound e) {
+        return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
 }

@@ -16,11 +16,7 @@ public class ParserFactory {
     private final HashMap<String, Class<? extends Parser>> availableParsers;
 
     public ParserFactory() {
-        try {
-            availableParsers = initializeAvailableParsers();
-        } catch (Exception e) {
-            throw new ParserNotFound("The appropriate parser was not found for the file.");
-        }
+        availableParsers = initializeAvailableParsers();
     }
 
     public Parser getParser(MultipartFile file) {
@@ -29,7 +25,7 @@ public class ParserFactory {
             Class<? extends Parser> appropriateClass = getAppropriateClass(fileExtension);
             return createParserFromClass(appropriateClass);
         } catch (Exception e) {
-            throw new ParserNotFound("The appropriate parser was not found.");
+            throw new ParserNotFound(" suitable parser hasn't been found for this file.");
         }
     }
 
@@ -43,12 +39,17 @@ public class ParserFactory {
         throw new RuntimeException();
     }
 
-    private HashMap<String, Class<? extends Parser>> initializeAvailableParsers() throws Exception {
+    private HashMap<String, Class<? extends Parser>> initializeAvailableParsers() {
         HashMap<String, Class<? extends Parser>> parsers = new HashMap<>();
         Set<Class<? extends Parser>> setOfParserClasses = reflections.getSubTypesOf(Parser.class);
 
         for (Class<? extends Parser> parserClass : setOfParserClasses) {
-            String appropriateExtension = getAppropriateExtensionFromClass(parserClass);
+            String appropriateExtension;
+            try {
+                appropriateExtension = getAppropriateExtensionFromClass(parserClass);
+            } catch (Exception e) {
+                throw new ParserNotFound("A error within server.");
+            }
             parsers.put(appropriateExtension, parserClass);
         }
 
