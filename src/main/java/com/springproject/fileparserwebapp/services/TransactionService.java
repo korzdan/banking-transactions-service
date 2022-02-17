@@ -4,6 +4,7 @@ import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.exception.ParserNotFound;
 import com.springproject.fileparserwebapp.exception.TransactionNotFound;
+import com.springproject.fileparserwebapp.models.Statistics;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
@@ -15,12 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final ParserFactory parserFactory;
+
+    private final Set<String> successStatuses = Set.of("SUCCESS", "COMPLETE");
+    private final Set<String> failureStatuses = Set.of("FAILURE", "FAILED", "REJECTED");
 
     public List<Transaction> findAllTransactions() {
         return transactionRepository.findAll();
@@ -35,25 +40,26 @@ public class TransactionService {
     }
 
     public List<Transaction> getTopFiveTransaction() {
-        return transactionRepository.getTopFiveTransactions();
+        return transactionRepository.findTop5ByOrderByAmountDesc();
     }
 
     public Transaction getMaxAmountTransaction() {
-        return transactionRepository.getMaxAmountTransaction().orElseThrow(() -> {
+        return transactionRepository.findFirstByOrderByAmountDesc().orElseThrow(() -> {
             throw new TransactionNotFound("No transaction has been found.");
         });
     }
 
-    public String getTransactionStatistic() {
+    public Statistics getTransactionsStatistics() {
         List<Transaction> allTransactions = transactionRepository.findAll();
-        int numberOfTransactions = allTransactions.size();
-        int numberOfSuccessfulTransactions = getNumberOfSuccessfulTransactions(allTransactions);
-        int numberOfFailedTransactions = getNumberOfFailedTransactions(allTransactions);
-        return createStatistics(numberOfTransactions, numberOfSuccessfulTransactions, numberOfFailedTransactions);
+        return new Statistics((long)allTransactions.size(),
+                getNumberOfSuccessfulTransactions(allTransactions),
+                getNumberOfFailedTransactions(allTransactions),
+                getMinAmountTransaction(),
+                getMaxAmountTransaction());
     }
 
     public Transaction getMinAmountTransaction() {
-        return transactionRepository.getMinAmountTransaction().orElseThrow(() -> {
+        return transactionRepository.findFirstByOrderByAmountAsc().orElseThrow(() -> {
             throw new TransactionNotFound("No transaction has been found.");
         });
     }
@@ -88,33 +94,15 @@ public class TransactionService {
         }
     }
 
-    private int getNumberOfSuccessfulTransactions(List<Transaction> transactions) {
-        int numberOfSuccessfulTransactions = 0;
-        for (Transaction transaction : transactions) {
-            if (transaction.getStatus().equals("SUCCESS") || transaction.getStatus().equals("COMPLETE")) {
-                numberOfSuccessfulTransactions++;
-            }
-        }
-        return numberOfSuccessfulTransactions;
+    private long getNumberOfSuccessfulTransactions(List<Transaction> transactions) {
+        return transactions.stream()
+                .filter(transaction -> successStatuses.contains(transaction.getStatus()))
+                .count();
     }
 
-    private int getNumberOfFailedTransactions(List<Transaction> transactions) {
-        int numberOfSuccessfulTransactions = 0;
-        for (Transaction transaction : transactions) {
-            if (transaction.getStatus().equals("FAILED") || transaction.getStatus().equals("REJECTED") ||
-                    transaction.getStatus().equals("FAILURE")) {
-                numberOfSuccessfulTransactions++;
-            }
-        }
-        return numberOfSuccessfulTransactions;
-    }
-
-    private String createStatistics(int numberOfTransactions, int numberOfSuccessfulTransactions,
-                                    int numberOfFailedTransactions) {
-        return "Total number of transactions: " + numberOfTransactions +
-                ". Where successful: " + numberOfSuccessfulTransactions +
-                " failed: " + numberOfFailedTransactions +
-                " Min transaction: " + getMinAmountTransaction().getAmount() +
-                " Max transaction: " + getMaxAmountTransaction().getAmount();
+    private long getNumberOfFailedTransactions(List<Transaction> transactions) {
+        return transactions.stream()
+                .filter(transaction -> failureStatuses.contains(transaction.getStatus()))
+                .count();
     }
 }

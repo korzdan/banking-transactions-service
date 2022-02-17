@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getAllTransactions() {
         return new ResponseEntity<>(transactionService.findAllTransactions(), HttpStatus.OK);
     }
@@ -38,6 +38,6 @@ public class TransactionController {
 
     @GetMapping("/statistics")
     public ResponseEntity<?> getTransactionStatistics() {
-        return new ResponseEntity<>(transactionService.getTransactionStatistic(), HttpStatus.OK);
+        return new ResponseEntity<>(transactionService.getTransactionsStatistics(), HttpStatus.OK);
     }
 }
