@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,18 +25,14 @@ public class ErrorService {
         return new Error((User)currentUser, message);
     }
 
-    public List<Error> getAllErrorsForManager() {
-        return errorRepository.findAll();
+    public List<Error> getAllErrorsCheckingCurrentUser(User user) {
+        List<Error> allErrors = errorRepository.findAll();
+        return isCurrentUserManager(user) ? allErrors : allErrors.stream()
+                        .filter(e -> e.getUser().getUsername().equals(user.getUsername()))
+                        .collect(Collectors.toList());
     }
 
-    public List<Error> getAllErrorsForOperator() {
-        List<Error> allErrors = errorRepository.findAll();
-        List<Error> errorsListForOperator = new ArrayList<>();
-        for (Error error : allErrors) {
-            if (error.getUser().getRole().equals(Role.OPERATOR)) {
-                errorsListForOperator.add(error);
-            }
-        }
-        return errorsListForOperator;
+    private boolean isCurrentUserManager(User user) {
+        return user.getRole().equals(Role.MANAGER);
     }
 }
