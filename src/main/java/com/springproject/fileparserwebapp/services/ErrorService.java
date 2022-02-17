@@ -1,10 +1,11 @@
 package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.models.Error;
+import com.springproject.fileparserwebapp.models.Role;
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.ErrorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,26 +20,20 @@ public class ErrorService {
         return errorRepository.save(error);
     }
 
-    public Error createError(Exception exception, String message) {
-        String username;
+    public Error createError(String message) {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (currentUser instanceof UserDetails) {
-            username = ((UserDetails)currentUser).getUsername();
-        } else {
-            username = currentUser.toString();
-        }
-        return new Error(username, exception.getClass().getSimpleName(), message);
+        return new Error((User)currentUser, message);
     }
 
     public List<Error> getAllErrorsForManager() {
         return errorRepository.findAll();
     }
 
-    public List<Error> getAllErrorsForOperator(String username) {
+    public List<Error> getAllErrorsForOperator() {
         List<Error> allErrors = errorRepository.findAll();
         List<Error> errorsListForOperator = new ArrayList<>();
         for (Error error : allErrors) {
-            if (error.getUsername().equals(username)) {
+            if (error.getUser().getRole().equals(Role.OPERATOR)) {
                 errorsListForOperator.add(error);
             }
         }

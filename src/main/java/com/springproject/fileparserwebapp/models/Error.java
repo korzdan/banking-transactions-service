@@ -2,7 +2,6 @@ package com.springproject.fileparserwebapp.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,21 +9,19 @@ import javax.persistence.*;
 @Table(name = "errors")
 @Getter
 @Setter
-@ToString
 public class Error {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    @Column(name = "class")
-    private String errorClass;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id")
+    private User user;
     private String message;
 
     public Error() {}
 
-    public Error(String username, String errorClass, String message) {
-        this.username = username;
-        this.errorClass = errorClass;
+    public Error(User user, String message) {
+        this.user = user;
         this.message = message;
     }
 }

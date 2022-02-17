@@ -27,7 +27,7 @@ public class ErrorController {
                 .getPrincipal();
 
         if (currentUser.getRole().equals(Role.OPERATOR)) {
-            errorList = errorService.getAllErrorsForOperator(currentUser.getUsername());
+            errorList = errorService.getAllErrorsForOperator();
         }
         if (currentUser.getRole().equals(Role.MANAGER)) {
             errorList = errorService.getAllErrorsForManager();

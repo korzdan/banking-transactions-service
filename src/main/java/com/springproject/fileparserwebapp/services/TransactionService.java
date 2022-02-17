@@ -48,7 +48,7 @@ public class TransactionService {
                 errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
             } catch (FileParserException | InvalidFileException | ParserNotFound e) {
                 String messageToDatabase = file.getOriginalFilename() + e.getMessage();
-                errorService.saveError(errorService.createError(e, messageToDatabase));
+                errorService.saveError(errorService.createError(messageToDatabase));
                 errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
             }
         }
