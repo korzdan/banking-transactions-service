@@ -1,20 +1,20 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
-import './App.css';
-import axios from "axios";
-import Login from "./Login";
-import Success from "./Success";
-import Home from "./Home";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import Login from "./Components/Login/Login";
+import Success from "./Components/Success/Success";
+import Home from "./Components/Home/Home";
+import ErrorTable from "./Components/ErrorTable/ErrorTable";
 
 
 function App() {
   return (
-    <div className="App">
+    <div>
         <BrowserRouter>
                 <Switch>
+                    <Route exact path="/" component={Home}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/success" component={Success}/>
-                    <Route exact path="/" component={Home}/>
+                    <Route path="/errors" component={ErrorTable}/>
                 </Switch>
         </BrowserRouter>
     </div>
