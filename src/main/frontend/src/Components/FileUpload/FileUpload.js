@@ -3,11 +3,14 @@ import axios from "axios";
 import {getToken} from "../../Utils/Common";
 import "../FileUpload/FileUpload.css";
 import file_upload from '../../Assets/file_upload.png';
+import TokenPopup from "../TokenPopup/TokenPopup";
 
 const FileUpload = () => {
 
     const [multipleFiles, setMultipleFiles] = useState('');
     const [results, setResults] = useState('');
+    const [popup, setPopup] = useState(false);
+    const [disable, setDisable] = useState(false);
 
     const MultipleFileChange = (e) => {
         setMultipleFiles(e.target.files);
@@ -30,7 +33,8 @@ const FileUpload = () => {
                 setResults(error.response.data);
             }
             if (error.response.status === 403) {
-
+                setPopup(true);
+                setDisable(true);
             }
         })
     }
@@ -39,12 +43,19 @@ const FileUpload = () => {
         <div className="main_div">
             <label>
                 <img src={file_upload} alt="file_upload" id="file_upload"/>
-                <input type="file" onChange={(e) => MultipleFileChange(e)} multiple/>
+                <input disabled={disable} type="file" onChange={(e) => MultipleFileChange(e)} multiple/>
                 CHOOSE FILES TO UPLOAD
             </label>
             {multipleFiles.length!==0 && <div id="files_number">{multipleFiles.length} files are chosen</div>}
-            <button type="button" onClick={() => UploadMultipleFiles()}>SUBMIT</button>
+            <button type="button" disabled={disable} onClick={() => UploadMultipleFiles()}>SUBMIT</button>
             {results && <div id="file_upload_results">{results}</div>}
+
+            <TokenPopup trigger={popup} setTrigger={setPopup}>
+                <div>
+                    Your token is invalid! It's expired or token was changed. You need to
+                    re-login to verify that everything is ok.
+                </div>
+            </TokenPopup>
         </div>
     );
 };
