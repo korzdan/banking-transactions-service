@@ -9,17 +9,15 @@ import FileUpload from "./Components/FileUpload/FileUpload";
 
 function App() {
   return (
-    <div>
-        <BrowserRouter>
-                <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/success" component={Success}/>
-                    <Route path="/errors" component={ErrorTable}/>
-                    <Route path="/upload" component={FileUpload}/>
-                </Switch>
-        </BrowserRouter>
-    </div>
+      <BrowserRouter>
+          <Switch>
+              <Route exact path="/" component={Home}/>
+              <Route path="/login" component={Login}/>
+              <Route path="/success" component={Success}/>
+              <Route path="/errors" component={ErrorTable}/>
+              <Route path="/upload" component={FileUpload}/>
+          </Switch>
+      </BrowserRouter>
   );
 }
 

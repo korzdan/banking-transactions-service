@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import {getToken} from "../../Utils/Common";
+import "../FileUpload/FileUpload.css";
+import file_upload from '../../Assets/file_upload.png';
 
 const FileUpload = () => {
 
@@ -27,19 +29,23 @@ const FileUpload = () => {
             if (error.response.status === 406) {
                 setResults(error.response.data);
             }
+            if (error.response.status === 403) {
+
+            }
         })
     }
 
     return (
-        <form>
-            <div className="file-card">
+        <div className="main_div">
+            <label>
+                <img src={file_upload} alt="file_upload" id="file_upload"/>
                 <input type="file" onChange={(e) => MultipleFileChange(e)} multiple/>
-                <button type="button" onClick={() => UploadMultipleFiles()}>Submit</button>
-                <div id="file-upload-results">
-                    {results}
-                </div>
-            </div>
-        </form>
+                CHOOSE FILES TO UPLOAD
+            </label>
+            {multipleFiles.length!==0 && <div id="files_number">{multipleFiles.length} files are chosen</div>}
+            <button type="button" onClick={() => UploadMultipleFiles()}>SUBMIT</button>
+            {results && <div id="file_upload_results">{results}</div>}
+        </div>
     );
 };
 
