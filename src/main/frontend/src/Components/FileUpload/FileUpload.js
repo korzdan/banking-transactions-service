@@ -11,6 +11,7 @@ const FileUpload = () => {
     const [results, setResults] = useState('');
     const [popup, setPopup] = useState(false);
     const [disable, setDisable] = useState(false);
+    const [zeroFilesNum, setZeroFilesNum] = useState('');
 
     const MultipleFileChange = (e) => {
         setMultipleFiles(e.target.files);
@@ -36,6 +37,9 @@ const FileUpload = () => {
                 setPopup(true);
                 setDisable(true);
             }
+            if (error.response.status === 400) {
+                setZeroFilesNum("At least one file should be selected!");
+            }
         })
     }
 
@@ -43,10 +47,14 @@ const FileUpload = () => {
         <div className="main_div">
             <label>
                 <img src={file_upload} alt="file_upload" id="file_upload"/>
-                <input disabled={disable} type="file" onChange={(e) => MultipleFileChange(e)} multiple/>
-                CHOOSE FILES TO UPLOAD
+                <input disabled={disable} type="file" onChange={(e) => {
+                    MultipleFileChange(e);
+                    setZeroFilesNum('');
+                }} multiple/>
+                Choose Files to Upload
             </label>
             {multipleFiles.length!==0 && <div id="files_number">{multipleFiles.length} files are chosen</div>}
+            {zeroFilesNum && <div id="files_number">{zeroFilesNum}</div>}
             <button type="button" disabled={disable} onClick={() => UploadMultipleFiles()}>SUBMIT</button>
             {results && <div id="file_upload_results">{results}</div>}
 

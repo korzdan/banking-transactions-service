@@ -61,6 +61,7 @@ label:hover {
     border-radius: 25px;
     display: flex;
     justify-content: center;
+    transition: 0.4s;
 }
 
 #files_number {
