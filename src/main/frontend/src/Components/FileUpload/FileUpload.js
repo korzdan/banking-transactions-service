@@ -32,7 +32,7 @@ const FileUpload = () => {
             if (error.response.status === 406) {
                 setResults(error.response.data);
             }
-            if (error.response.status === 403) {
+            if (error.response.status === 403 || error.response.status === 401) {
                 setPopup(true);
                 setDisable(true);
             }

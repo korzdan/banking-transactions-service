@@ -1,21 +1,20 @@
 import React from 'react';
 import {useHistory} from "react-router";
+import "./TokenPopup.css"
 
 const TokenPopup = (props) => {
 
     const history = useHistory();
 
     return (props.trigger) ? (
-        <div>
-            <div>
-                <button onClick={() => {
-                    props.setTrigger(false);
-                    history.push("/login");
-                }}>
-                    Re-login
-                </button>
-                {props.children}
-            </div>
+        <div id="main-popup">
+            {props.children}
+            <button id="re-login" onClick={() => {
+                props.setTrigger(false);
+                history.push("/login");
+            }}>
+                Re-login
+            </button>
         </div>
     ) : "";
 };
