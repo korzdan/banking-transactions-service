@@ -26,10 +26,15 @@ public class ErrorService {
     }
 
     public List<Error> getAllErrorsCheckingCurrentUser(User user) {
-        List<Error> allErrors = errorRepository.findAll();
-        return isCurrentUserManager(user) ? allErrors : allErrors.stream()
-                        .filter(e -> e.getUser().getUsername().equals(user.getUsername()))
-                        .collect(Collectors.toList());
+        return isCurrentUserManager(user) ? getAllErrors() : getAllErrorsOfUser(user);
+    }
+
+    private List<Error> getAllErrors() {
+        return errorRepository.findAll();
+    }
+
+    private List<Error> getAllErrorsOfUser(User user) {
+        return errorRepository.getErrorsByUserId(user.getId());
     }
 
     private boolean isCurrentUserManager(User user) {
