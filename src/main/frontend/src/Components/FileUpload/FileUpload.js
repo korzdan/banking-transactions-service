@@ -45,7 +45,7 @@ const FileUpload = () => {
 
     return (
         <div className="main_div">
-            <label>
+            <label className="file-upload-label">
                 <img src={file_upload} alt="file_upload" id="file_upload"/>
                 <input disabled={disable} type="file" onChange={(e) => {
                     MultipleFileChange(e);

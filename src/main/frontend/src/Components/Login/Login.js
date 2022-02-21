@@ -5,7 +5,7 @@ import {setToken} from "../../Utils/Common";
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState('');
 
     const handleLogin = () => {
         setError(null);
@@ -26,22 +26,23 @@ const Login = (props) => {
     }
 
     return (
-        <div>
-            Welcome to Login page!<br/>
-            <div>
-                Username<br/>
-                <input type="text" value={username}
-                    onChange={e => setUsername(e.target.value)}/>
+        <form>
+            <div className="form-inner">
+                <h2>Welcome to login page! You need to be authenticated to use our app.</h2>
+                {(error !== "") && (<div className="login-error">{error}</div>)}
+                <div className="form-group">
+                    <label htmlFor="username">Username:</label>
+                    <input id="username" type="text" value={username}
+                        onChange={e => setUsername(e.target.value)}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" id="password" value={password}
+                           onChange={e => setPassword(e.target.value)}/>
+                </div>
+                <input type="button" value="Login" onClick={handleLogin}/>
             </div>
-            <div>
-                Password<br/>
-                <input type="password" value={password}
-                       onChange={e => setPassword(e.target.value)}/>
-            </div>
-            {error && <div className="error">{error}</div>}
-            <input type="button" value="login"
-                onClick={handleLogin}/>
-        </div>
+        </form>
     );
 };
 
