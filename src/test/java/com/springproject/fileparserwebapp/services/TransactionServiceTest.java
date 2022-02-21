@@ -1,13 +1,14 @@
 package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.models.Transaction;
-import com.springproject.fileparserwebapp.parsers.ParserFactory;
+import com.springproject.fileparserwebapp.repos.ErrorRepository;
 import com.springproject.fileparserwebapp.repos.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
@@ -29,6 +30,11 @@ class TransactionServiceTest {
 
     @Mock
     private TransactionRepository transactionRepository;
+    @Mock
+    private ErrorRepository errorRepository;
+    private ErrorService errorService;
+
+    @InjectMocks
     private TransactionService transactionService;
 
     private Transaction transactionToSave;
@@ -37,7 +43,6 @@ class TransactionServiceTest {
 
     @BeforeEach
     void setUp() {
-        transactionService = new TransactionService(transactionRepository, new ParserFactory());
         transactionToSave = new Transaction(
                 UUID.fromString("a4eeeb80-14fc-4142-b87d-e88386438a1b"),
                 UUID.fromString("b8e85137-4f3b-4a30-98f8-8be312ba74c6"),
