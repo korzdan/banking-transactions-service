@@ -1,0 +1,25 @@
+#main-popup {
+    background-color: crimson;
+    position: fixed;
+    width: 50%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 50px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#re-login {
+    background-color: white;
+    color: black;
+}
+
+#re-login:hover {
+    background-color: crimson;
+    color: white;
+    cursor: pointer;
+}
