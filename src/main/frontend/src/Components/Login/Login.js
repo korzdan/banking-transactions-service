@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {useHistory} from "react-router-dom";
 import axios from "axios";
-import {setUserSession} from "./Utils/Common";
+import {setToken} from "../../Utils/Common";
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
@@ -14,7 +13,7 @@ const Login = (props) => {
             username: username,
             password: password
         }).then(response => {
-            setUserSession(response.data.token);
+            setToken(response.data.token);
             props.history.push("/success");
             console.log(response);
         }).catch(error => {
