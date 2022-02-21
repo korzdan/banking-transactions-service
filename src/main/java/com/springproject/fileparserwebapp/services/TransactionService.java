@@ -23,6 +23,7 @@ import java.util.Set;
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final ParserFactory parserFactory;
+    private final ErrorService errorService;
 
     private final Set<String> successStatuses = Set.of("SUCCESS", "COMPLETE");
     private final Set<String> failureStatuses = Set.of("FAILURE", "FAILED", "REJECTED");
@@ -84,6 +85,7 @@ public class TransactionService {
             errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
         } catch (FileParserException | InvalidFileException | ParserNotFound e) {
             errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
+            errorService.saveError(errorService.createError(file.getOriginalFilename() + e.getMessage()));
         }
     }
 
