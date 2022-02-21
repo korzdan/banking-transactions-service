@@ -26,14 +26,7 @@ public class FileUploadController {
     @PreAuthorize("hasAuthority('file_upload')")
     public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
         List<MultipartFile> uploadedFiles = fileUploadService.uploadAllowedFiles(files);
-        List<Transaction> transactionList = (List<Transaction>) transactionService.saveAllTransactions
-                (transactionService.parseUploadedFiles(uploadedFiles));
-        return !(transactionList.isEmpty()) ?
-                ResponseEntity
-                        .status(HttpStatus.CREATED)
-                        .body("The files were successfully parsed") :
-                ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body("A mistake with files...");
+        transactionService.saveAllTransactions(transactionService.parseUploadedFiles(uploadedFiles));
+        return ResponseEntity.status(HttpStatus.CREATED).body("The files were successfully parsed");
     }
 }

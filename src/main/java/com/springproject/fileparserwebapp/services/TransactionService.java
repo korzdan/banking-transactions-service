@@ -3,6 +3,8 @@ package com.springproject.fileparserwebapp.services;
 import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.exception.ParserNotFound;
+import com.springproject.fileparserwebapp.exception.TransactionNotFound;
+import com.springproject.fileparserwebapp.models.Statistics;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
@@ -14,13 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
-    private final ErrorService errorService;
     private final ParserFactory parserFactory;
+
+    private final Set<String> successStatuses = Set.of("SUCCESS", "COMPLETE");
+    private final Set<String> failureStatuses = Set.of("FAILURE", "FAILED", "REJECTED");
 
     public List<Transaction> findAllTransactions() {
         return transactionRepository.findAll();
@@ -34,32 +39,70 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
+    public List<Transaction> getTopFiveTransaction() {
+        return transactionRepository.findTop5ByOrderByAmountDesc();
+    }
+
+    public Transaction getMaxAmountTransaction() {
+        return transactionRepository.findFirstByOrderByAmountDesc().orElseThrow(() -> {
+            throw new TransactionNotFound("No transaction has been found.");
+        });
+    }
+
+    public Statistics getTransactionsStatistics() {
+        List<Transaction> allTransactions = transactionRepository.findAll();
+        return new Statistics((long)allTransactions.size(),
+                getNumberOfSuccessfulTransactions(allTransactions),
+                getNumberOfFailedTransactions(allTransactions),
+                getMinAmountTransaction(),
+                getMaxAmountTransaction());
+    }
+
+    public Transaction getMinAmountTransaction() {
+        return transactionRepository.findFirstByOrderByAmountAsc().orElseThrow(() -> {
+            throw new TransactionNotFound("No transaction has been found.");
+        });
+    }
+
     public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
         List<Transaction> transactions = new ArrayList<>();
-        // StringBuilder for collecting information about exceptions
         StringBuilder errorLog = new StringBuilder();
-
-        // Parsing files and catching invalid files
         for (MultipartFile file : files) {
-            try {
-                Parser parser = parserFactory.getParser(file);
-                transactions.addAll(parser.parse(file.getInputStream()));
-            } catch (IOException e) {
-                errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
-            } catch (FileParserException | InvalidFileException | ParserNotFound e) {
-                String messageToDatabase = file.getOriginalFilename() + e.getMessage();
-                errorService.saveError(errorService.createError(messageToDatabase));
-                errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
-            }
+            parseFileAndCatchExceptions(transactions, file, errorLog);
         }
-
-        // Save parsed transactions to the database
         transactionRepository.saveAll(transactions);
+        throwExceptionIfErrorLogIsNotEmpty(errorLog);
+        return transactions;
+    }
 
+    private void parseFileAndCatchExceptions(List<Transaction> transactions,
+                                             MultipartFile file, StringBuilder errorLog) {
+        try {
+            Parser parser = parserFactory.getParser(file);
+            transactions.addAll(parser.parse(file.getInputStream()));
+        } catch (IOException e) {
+            errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
+        } catch (FileParserException | InvalidFileException | ParserNotFound e) {
+            errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
+        }
+    }
+
+    private void throwExceptionIfErrorLogIsNotEmpty(StringBuilder errorLog) {
         if (errorLog.length() != 0) {
             errorLog.append(" Other files have been parsed.");
             throw new InvalidFileException(errorLog.toString());
         }
-        return transactions;
+    }
+
+    private long getNumberOfSuccessfulTransactions(List<Transaction> transactions) {
+        return transactions.stream()
+                .filter(transaction -> successStatuses.contains(transaction.getStatus()))
+                .count();
+    }
+
+    private long getNumberOfFailedTransactions(List<Transaction> transactions) {
+        return transactions.stream()
+                .filter(transaction -> failureStatuses.contains(transaction.getStatus()))
+                .count();
     }
 }
