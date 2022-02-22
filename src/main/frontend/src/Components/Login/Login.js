@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from "axios";
 import {setToken} from "../../Utils/Common";
+import "../Login/Login.css"
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
@@ -26,23 +27,25 @@ const Login = (props) => {
     }
 
     return (
-        <form>
+        <div className="outer-form">
+        <form className="login-form">
             <div className="form-inner">
-                <h2>Welcome to login page! You need to be authenticated to use our app.</h2>
+                <h2>Please login, to use our application!</h2>
                 {(error !== "") && (<div className="login-error">{error}</div>)}
                 <div className="form-group">
                     <label htmlFor="username">Username:</label>
-                    <input id="username" type="text" value={username}
+                    <input className="login" id="username" type="text" value={username}
                         onChange={e => setUsername(e.target.value)}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" value={password}
+                    <input className="login" type="password" id="password" value={password}
                            onChange={e => setPassword(e.target.value)}/>
                 </div>
-                <input type="button" value="Login" onClick={handleLogin}/>
+                <input className="login" type="button" id="login" value="Login" onClick={handleLogin}/>
             </div>
         </form>
+        </div>
     );
 };
 
