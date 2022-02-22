@@ -21,6 +21,7 @@ const ErrorTable = () => {
 
     return (
         <div className="error-table">
+            <div className="scroll-div">
             <table>
                 <thead>
                     <tr>
@@ -39,6 +40,7 @@ const ErrorTable = () => {
                 }
                 </tbody>
             </table>
+            </div>
         </div>
     );
 };
