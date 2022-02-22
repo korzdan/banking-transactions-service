@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import "./ErrorTable.css"
 import axios from "axios";
-import {getToken} from "../../Utils/Common";
+import {getToken} from "../../utils/Common";
 
 const ErrorTable = () => {
 

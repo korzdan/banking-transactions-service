@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {getToken} from "../../Utils/Common";
+import {getToken} from "../../utils/Common";
 import "../FileUpload/FileUpload.css";
-import file_upload from '../../Assets/file_upload.png';
+import file_upload from '../../assets/file_upload.png';
 import TokenPopup from "../TokenPopup/TokenPopup";
 
 const FileUpload = () => {

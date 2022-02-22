@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {setToken} from "../../Utils/Common";
+import {setToken} from "../../utils/Common";
 import "../Login/Login.css"
 
 const Login = (props) => {
@@ -15,8 +15,7 @@ const Login = (props) => {
             password: password
         }).then(response => {
             setToken(response.data.token);
-            props.history.push("/success");
-            console.log(response);
+            props.history.push("/upload");
         }).catch(error => {
             if (error.response.status === 401) {
                 setError(error.response.data.message);
