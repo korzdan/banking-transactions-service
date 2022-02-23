@@ -14,14 +14,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FileService {
 
-    private FileRepository fileRepository;
+    private final FileRepository fileRepository;
 
-    public List<File> findAllFilesUploadedByUser(User user) {
-        return fileRepository.findAllByUserId(user.getId());
+    public List<File> findAllFilesUploadedByUser(Long userId) {
+        return fileRepository.getAllByUserId(userId);
     }
 
     public File saveUploadedFile(MultipartFile file) {
-        return fileRepository.saveFile(createFile(file));
+        return fileRepository.save(createFile(file));
     }
 
     private File createFile(MultipartFile file) {

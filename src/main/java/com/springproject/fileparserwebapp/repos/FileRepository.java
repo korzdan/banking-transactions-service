@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FileRepository extends JpaRepository<File, Long> {
-    List<File> findAllByUserId(Long id);
-    File saveFile(File file);
+    List<File> getAllByUserId(Long id);
 }
