@@ -17,4 +17,11 @@ public class File {
 
     @ManyToOne(optional = false)
     private User user;
+
+    public File() {}
+
+    public File(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
 }
