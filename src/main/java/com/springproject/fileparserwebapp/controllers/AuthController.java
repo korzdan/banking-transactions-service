@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.controllers;
 
+import com.springproject.fileparserwebapp.dto.AuthenticationRequestDTO;
 import com.springproject.fileparserwebapp.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
-import com.springproject.fileparserwebapp.controllers.AuthenticationRequestDTO;
+import com.springproject.fileparserwebapp.dto.AuthenticationRequestDTO;
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

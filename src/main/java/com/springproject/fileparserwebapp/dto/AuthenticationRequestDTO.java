@@ -1,4 +1,4 @@
-package com.springproject.fileparserwebapp.controllers;
+package com.springproject.fileparserwebapp.dto;
 
 import lombok.Data;
 

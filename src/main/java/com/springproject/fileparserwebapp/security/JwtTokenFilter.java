@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.security;
 
+import com.springproject.fileparserwebapp.exception.JwtAuthenticationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;

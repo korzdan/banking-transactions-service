@@ -1,4 +1,4 @@
-package com.springproject.fileparserwebapp.security;
+package com.springproject.fileparserwebapp.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
