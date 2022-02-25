@@ -1,5 +1,7 @@
 package com.springproject.fileparserwebapp.services;
 
+import com.springproject.fileparserwebapp.dto.UserRequestDTO;
+import com.springproject.fileparserwebapp.mappers.UserRequestToUserMapper;
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +26,14 @@ public class UserService implements UserDetailsService {
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
+
+    public User registerUser(UserRequestDTO userDto) {
+        try {
+            loadUserByUsername(userDto.getUsername());
+            throw new UsernameAlreadyExists("A user with such a username already exists.");
+        } catch (UsernameNotFoundException e) {
+            return userRepository.save(UserRequestToUserMapper.mapUserRequestDTOToUser(userDto));
+        }
+    }
+
 }
