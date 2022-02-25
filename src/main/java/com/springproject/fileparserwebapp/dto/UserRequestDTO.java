@@ -5,7 +5,7 @@ import com.springproject.fileparserwebapp.models.Status;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserRequestDTO {
     private String username;
     private String password;
     private Role role;
