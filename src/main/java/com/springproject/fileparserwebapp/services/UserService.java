@@ -1,6 +1,7 @@
 package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.dto.UserRequestDTO;
+import com.springproject.fileparserwebapp.exception.UsernameAlreadyExists;
 import com.springproject.fileparserwebapp.mappers.UserRequestToUserMapper;
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
