@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,10 +28,14 @@ public class Transaction {
     private String currency;
     @Column(name = "status")
     private String status;
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @JoinTable(
+            name = "users_transactions",
+            joinColumns = @JoinColumn(name = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
     private User user;
-
 
     public Transaction() {}
 

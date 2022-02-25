@@ -24,8 +24,12 @@ public class User implements UserDetails {
     private Role role;
     @Enumerated(value = EnumType.STRING)
     private Status status;
-
     @OneToMany
+    @JoinTable(
+            name = "users_transactions",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
     private Set<Transaction> transactions = new HashSet<>();
 
     public User() {}
