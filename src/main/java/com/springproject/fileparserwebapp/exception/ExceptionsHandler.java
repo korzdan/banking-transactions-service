@@ -30,4 +30,9 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(TransactionNotFound.class)
+    public ResponseEntity<Object> handleTransactionNotFound(TransactionNotFound e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
