@@ -16,12 +16,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@PreAuthorize("hasAuthority('execute_command')")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('execute_command')")
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
@@ -29,6 +29,11 @@ public class UserController {
     @GetMapping("/{id}/transactions")
     public ResponseEntity<?> getAllTransactionsOfUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getTransactionsOfUser(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
 }
