@@ -27,13 +27,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findUserById(Long id) {
+    public User findUserById(Long id) throws UsernameNotFoundException {
         return userRepository.findById(id).orElseThrow(
                 () -> new UsernameNotFoundException("User hasn't been found.")
         );
     }
 
-    public List<Transaction> getTransactionsOfUser(Long id) {
+    public List<Transaction> getTransactionsOfUser(Long id) throws UsernameNotFoundException {
         return new ArrayList<>(findUserById(id).getTransactions());
     }
 }
