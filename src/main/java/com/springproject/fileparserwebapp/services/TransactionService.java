@@ -24,6 +24,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final ParserFactory parserFactory;
     private final ErrorService errorService;
+    private final FileService fileService;
 
     private final Set<String> successStatuses = Set.of("SUCCESS", "COMPLETE");
     private final Set<String> failureStatuses = Set.of("FAILURE", "FAILED", "REJECTED");
@@ -81,6 +82,7 @@ public class TransactionService {
         try {
             Parser parser = parserFactory.getParser(file);
             transactions.addAll(parser.parse(file.getInputStream()));
+            fileService.saveUploadedFile(file);
         } catch (IOException e) {
             errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
         } catch (FileParserException | InvalidFileException | ParserNotFound e) {
