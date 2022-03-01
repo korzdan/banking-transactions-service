@@ -1,6 +1,5 @@
 package com.springproject.fileparserwebapp.controllers;
 
-import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.services.FileUploadService;
 import com.springproject.fileparserwebapp.services.TransactionService;
 import lombok.RequiredArgsConstructor;

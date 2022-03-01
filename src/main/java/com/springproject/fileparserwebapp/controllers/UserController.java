@@ -1,15 +1,15 @@
 package com.springproject.fileparserwebapp.controllers;
 
+import com.springproject.fileparserwebapp.dto.UserRequestDTO;
 import com.springproject.fileparserwebapp.models.User;
+import com.springproject.fileparserwebapp.services.FileService;
 import com.springproject.fileparserwebapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +20,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FileService fileService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
@@ -34,6 +36,18 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userService.registerUser(userDTO);
+        return new ResponseEntity<>("User has been successfully registered!", HttpStatus.OK);
+    }
+
+    @GetMapping("users/{userId}/files")
+    public ResponseEntity<?> getAllFilesUploadedByUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(fileService.findAllFilesUploadedByUser(userId), HttpStatus.OK);
     }
 
 }
