@@ -4,6 +4,3 @@ CREATE TABLE users_transactions(
     FOREIGN KEY (employee_id) REFERENCES users(id),
     FOREIGN KEY (transaction_id) REFERENCES transactions(id)
 );
-
-ALTER TABLE transactions
-    DROP COLUMN employee_id;

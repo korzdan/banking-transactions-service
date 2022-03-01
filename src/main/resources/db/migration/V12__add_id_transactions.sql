@@ -1,0 +1,2 @@
+ALTER TABLE transactions
+    ADD COLUMN id SERIAL PRIMARY KEY;
