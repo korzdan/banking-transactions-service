@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.services;
 
+import com.springproject.fileparserwebapp.exception.UserNotFound;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
@@ -27,13 +28,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findUserById(Long id) throws UsernameNotFoundException {
+    public User findUserById(Long id) throws UserNotFound {
         return userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException("User hasn't been found.")
+                () -> new UserNotFound("User hasn't been found.")
         );
     }
 
-    public List<Transaction> getTransactionsOfUser(Long id) throws UsernameNotFoundException {
+    public List<Transaction> getTransactionsOfUser(Long id) throws UserNotFound {
         return new ArrayList<>(findUserById(id).getTransactions());
     }
 }
