@@ -25,6 +25,7 @@ public class User implements UserDetails {
     private Role role;
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
     @OneToMany
     @JoinTable(
             name = "users_transactions",
@@ -36,10 +37,18 @@ public class User implements UserDetails {
     @OneToMany
     @JoinTable(
             name = "users_files",
-            joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "file_id")
     )
     private Collection<File> files = new ArrayList<>();
+
+    @OneToMany
+    @JoinTable(
+            name = "users_errors",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "error_id")
+    )
+    private Collection<Error> errors = new ArrayList<>();
 
     public User() {}
 
