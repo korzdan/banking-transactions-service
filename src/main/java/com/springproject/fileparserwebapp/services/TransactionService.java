@@ -33,6 +33,12 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
+    public Transaction findTransactionById(Long id) {
+        return transactionRepository.findById(id).orElseThrow(() -> {
+            throw new TransactionNotFound("Transaction hasn't been found.");
+        });
+    }
+
     public Transaction saveTransaction(Transaction transactionToSave) {
         return transactionRepository.save(transactionToSave);
     }

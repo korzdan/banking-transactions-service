@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,6 +25,13 @@ public class User implements UserDetails {
     private Role role;
     @Enumerated(value = EnumType.STRING)
     private Status status;
+    @OneToMany
+    @JoinTable(
+            name = "users_transactions",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "transaction_id")
+    )
+    private Set<Transaction> transactions = new HashSet<>();
 
     @OneToMany
     @JoinTable(

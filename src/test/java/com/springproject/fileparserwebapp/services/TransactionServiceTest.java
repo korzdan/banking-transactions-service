@@ -1,6 +1,7 @@
 package com.springproject.fileparserwebapp.services;
 
 import com.springproject.fileparserwebapp.models.Transaction;
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.ErrorRepository;
 import com.springproject.fileparserwebapp.repos.TransactionRepository;
 import org.junit.jupiter.api.Assertions;
@@ -45,6 +46,7 @@ class TransactionServiceTest {
     void setUp() {
         transactionToSave = new Transaction(
                 UUID.fromString("a4eeeb80-14fc-4142-b87d-e88386438a1b"),
+                new User(),
                 UUID.fromString("b8e85137-4f3b-4a30-98f8-8be312ba74c6"),
                 new Timestamp(System.currentTimeMillis()),
                 10643,
@@ -83,6 +85,7 @@ class TransactionServiceTest {
     }
 
     @Test
+    //TODO: Fix the test
     void VerifyInvocationOfSaveAll_WhenParsingUploadedFiles() throws IOException {
         MultipartFile firstMultipartFile = new MockMultipartFile("first.xml",
                 "xml_example.xml", "text/xml", new FileInputStream(xmlFile));

@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface TransactionRepository extends CrudRepository<Transaction, UUID> {
+public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
     List<Transaction> findAll();
 

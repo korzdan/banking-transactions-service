@@ -10,28 +10,34 @@ import java.util.Date;
 @ControllerAdvice
 public class ExceptionsHandler {
     @ExceptionHandler(InvalidFileException.class)
-    public ResponseEntity<Object> handleInvalidFileException(InvalidFileException e) {
+    public ResponseEntity<?> handleInvalidFileException(InvalidFileException e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(FileParserException.class)
-    public ResponseEntity<Object> handleFileParserException(FileParserException e) {
+    public ResponseEntity<?> handleFileParserException(FileParserException e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(FileWritingException.class)
-    public ResponseEntity<Object> handleFileWritingException(FileWritingException e) {
+    public ResponseEntity<?> handleFileWritingException(FileWritingException e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.CONFLICT);
     }
 
+
     @ExceptionHandler(ParserNotFound.class)
-    public ResponseEntity<Object> handleParserNotFoundException(ParserNotFound e) {
+    public ResponseEntity<?> handleParserNotFoundException(ParserNotFound e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler(UsernameAlreadyExists.class)
-    public ResponseEntity<Object> handleUsernameAlreadyExists(UsernameAlreadyExists e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    @ExceptionHandler(TransactionNotFound.class)
+    public ResponseEntity<?> handleTransactionNotFound(TransactionNotFound e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFound.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFound exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,6 +14,8 @@ import java.util.UUID;
 @ToString
 public class Transaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "transaction_id")
     private UUID transactionId;
     @Column(name = "user_id")
@@ -25,11 +28,20 @@ public class Transaction {
     private String currency;
     @Column(name = "status")
     private String status;
+    @JsonIgnore
+    @ManyToOne
+    @JoinTable(
+            name = "users_transactions",
+            joinColumns = @JoinColumn(name = "transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
+    private User user;
 
     public Transaction() {}
 
-    public Transaction(UUID transactionId, UUID userId, Timestamp timestamp, long amount, String currency, String status) {
+    public Transaction(UUID transactionId, User user, UUID userId, Timestamp timestamp, long amount, String currency, String status) {
         this.transactionId = transactionId;
+        this.user = user;
         this.userId = userId;
         this.timestamp = timestamp;
         this.amount = amount;
