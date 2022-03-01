@@ -1,9 +1,9 @@
 package com.springproject.fileparserwebapp.services;
 
+import com.springproject.fileparserwebapp.exception.UserNotFound;
 import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.repos.UserRepository;
-import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,12 +76,12 @@ class UserServiceTest {
     }
 
     @Test
-    void ThrowUsernameNotFoundException_ForNonExistentId() throws UsernameNotFoundException {
+    void ThrowUsernameNotFoundException_ForNonExistentId() throws UserNotFound {
         Long nonExistentId = 0L;
 
         when(userRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-        UsernameNotFoundException exception = Assertions.assertThrows(UsernameNotFoundException.class,
+        UserNotFound exception = Assertions.assertThrows(UserNotFound.class,
                 () -> userService.findUserById(nonExistentId));
 
         Assertions.assertEquals("User hasn't been found.", exception.getMessage());
