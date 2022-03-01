@@ -24,10 +24,14 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.CONFLICT);
     }
 
-
     @ExceptionHandler(ParserNotFound.class)
     public ResponseEntity<Object> handleParserNotFoundException(ParserNotFound e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(UsernameAlreadyExists.class)
+    public ResponseEntity<Object> handleUsernameAlreadyExists(UsernameAlreadyExists e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 }
