@@ -1,7 +1,9 @@
 package com.springproject.fileparserwebapp.controllers;
 
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.services.FileUploadService;
 import com.springproject.fileparserwebapp.services.TransactionService;
+import com.springproject.fileparserwebapp.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,8 @@ public class FileUploadController {
     @PreAuthorize("hasAuthority('file_upload')")
     public ResponseEntity<?> fileUpload(@RequestParam("files") MultipartFile[] files) {
         List<MultipartFile> uploadedFiles = fileUploadService.uploadAllowedFiles(files);
-        transactionService.saveAllTransactions(transactionService.parseUploadedFiles(uploadedFiles));
+        transactionService.saveAllTransactions(
+                transactionService.parseUploadedFiles(uploadedFiles, Utils.getCurrentUser()));
         return ResponseEntity.status(HttpStatus.CREATED).body("The files were successfully parsed");
     }
 }

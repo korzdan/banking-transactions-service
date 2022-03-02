@@ -6,6 +6,7 @@ import com.springproject.fileparserwebapp.exception.ParserNotFound;
 import com.springproject.fileparserwebapp.exception.TransactionNotFound;
 import com.springproject.fileparserwebapp.models.Statistics;
 import com.springproject.fileparserwebapp.models.Transaction;
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.parsers.Parser;
 import com.springproject.fileparserwebapp.parsers.ParserFactory;
 import com.springproject.fileparserwebapp.repos.TransactionRepository;
@@ -72,11 +73,11 @@ public class TransactionService {
         });
     }
 
-    public List<Transaction> parseUploadedFiles(List<MultipartFile> files) {
+    public List<Transaction> parseUploadedFiles(List<MultipartFile> files, User currentUser) {
         List<Transaction> transactions = new ArrayList<>();
         StringBuilder errorLog = new StringBuilder();
         for (MultipartFile file : files) {
-            parseFileAndCatchExceptions(transactions, file, errorLog);
+            parseFileAndCatchExceptions(transactions, file, errorLog, currentUser);
         }
         transactionRepository.saveAll(transactions);
         throwExceptionIfErrorLogIsNotEmpty(errorLog);
@@ -84,10 +85,10 @@ public class TransactionService {
     }
 
     private void parseFileAndCatchExceptions(List<Transaction> transactions,
-                                             MultipartFile file, StringBuilder errorLog) {
+                                             MultipartFile file, StringBuilder errorLog, User currentUser) {
         try {
             Parser parser = parserFactory.getParser(file);
-            transactions.addAll(parser.parse(file.getInputStream()));
+            transactions.addAll(parser.parse(file.getInputStream(), currentUser));
             fileService.saveUploadedFile(file);
         } catch (IOException e) {
             errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
