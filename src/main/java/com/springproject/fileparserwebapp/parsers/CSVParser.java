@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.utils.Utils;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Component
 public class CSVParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(InputStream inputStream) throws InvalidFileException, FileParserException {
+    public ArrayList<Transaction> parse(InputStream inputStream, User currentUser) throws InvalidFileException, FileParserException {
         ArrayList<Transaction> listOfTransactions = new ArrayList<>();
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
             List<String[]> listOfRecords = csvReader.readAll();
@@ -38,7 +39,7 @@ public class CSVParser implements Parser {
                     amount = Long.parseLong(listOfRecords.get(i)[3]);
                     currency = listOfRecords.get(i)[4].toUpperCase();
                     status = listOfRecords.get(i)[5].toUpperCase();
-                    listOfTransactions.add(new Transaction(transactionID, Utils.getCurrentUser(), userID, timestamp, amount, currency, status));
+                    listOfTransactions.add(new Transaction(transactionID, currentUser, userID, timestamp, amount, currency, status));
                 } catch (ArrayIndexOutOfBoundsException e) {
                     throw new InvalidFileException(" has some null values: it cannot be parsed.");
                 }

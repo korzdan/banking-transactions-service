@@ -3,6 +3,7 @@ package com.springproject.fileparserwebapp.parsers;
 import com.springproject.fileparserwebapp.exception.FileParserException;
 import com.springproject.fileparserwebapp.exception.InvalidFileException;
 import com.springproject.fileparserwebapp.models.Transaction;
+import com.springproject.fileparserwebapp.models.User;
 import com.springproject.fileparserwebapp.utils.Utils;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.*;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Component
 public class XMLParser implements Parser {
     @Override
-    public ArrayList<Transaction> parse(InputStream inputStream) throws InvalidFileException, FileParserException {
+    public ArrayList<Transaction> parse(InputStream inputStream, User currentUser) throws InvalidFileException, FileParserException {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 
         ArrayList<Transaction> parsedTransactions = new ArrayList<>();
@@ -54,7 +55,7 @@ public class XMLParser implements Parser {
                 long amount = removeSpacesInAmountProperty(getTagValue("amount", paymentElement));
                 String currency = getTagValue("currency", paymentElement);
                 String status = getTagValue("status", transactionElement);
-                parsedTransactions.add(new Transaction(transactionID, Utils.getCurrentUser(), userID, timestamp, amount, currency, status));
+                parsedTransactions.add(new Transaction(transactionID, currentUser, userID, timestamp, amount, currency, status));
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new FileParserException(" cannot be parsed: file is invalid.");
