@@ -94,7 +94,8 @@ public class TransactionService {
             errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
         } catch (FileParserException | InvalidFileException | ParserNotFound e) {
             errorLog.append(" " + file.getOriginalFilename() + e.getMessage());
-            errorService.saveError(errorService.createError(file.getOriginalFilename() + e.getMessage()));
+            errorService.saveError(errorService.createError(file.getOriginalFilename() + e.getMessage(),
+                    currentUser));
         }
     }
 

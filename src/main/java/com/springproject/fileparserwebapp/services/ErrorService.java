@@ -20,9 +20,8 @@ public class ErrorService {
         return errorRepository.save(error);
     }
 
-    public Error createError(String message) {
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new Error((User)currentUser, message);
+    public Error createError(String message, User currentUser) {
+        return new Error(currentUser, message);
     }
 
     public List<Error> getAllErrorsCheckingCurrentUser(User user) {
