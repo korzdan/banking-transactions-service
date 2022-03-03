@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -47,5 +48,24 @@ public class Transaction {
         this.amount = amount;
         this.currency = currency;
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return amount == that.amount && Objects.equals(id, that.id)
+                && Objects.equals(transactionId, that.transactionId)
+                && Objects.equals(userId, that.userId)
+                && Objects.equals(timestamp, that.timestamp)
+                && Objects.equals(currency, that.currency)
+                && Objects.equals(status, that.status)
+                && Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, transactionId, userId, timestamp, amount, currency, status, user);
     }
 }
