@@ -29,7 +29,7 @@ public class TransactionController {
 
     @GetMapping("/top")
     public ResponseEntity<?> getTopFiveTransactions() {
-        return new ResponseEntity<>(transactionService.getTopFiveTransaction(), HttpStatus.OK);
+        return new ResponseEntity<>(transactionService.getTopFiveTransactions(), HttpStatus.OK);
     }
 
     @GetMapping("/max")

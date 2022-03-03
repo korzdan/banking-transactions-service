@@ -48,12 +48,18 @@ public class TransactionService {
         return transactionRepository.saveAll(transactions);
     }
 
-    public List<Transaction> getTopFiveTransaction() {
+    public List<Transaction> getTopFiveTransactions() {
         return transactionRepository.findTop5ByOrderByAmountDesc();
     }
 
     public Transaction getMaxAmountTransaction() {
         return transactionRepository.findFirstByOrderByAmountDesc().orElseThrow(() -> {
+            throw new TransactionNotFound("No transaction has been found.");
+        });
+    }
+
+    public Transaction getMinAmountTransaction() {
+        return transactionRepository.findFirstByOrderByAmountAsc().orElseThrow(() -> {
             throw new TransactionNotFound("No transaction has been found.");
         });
     }
@@ -65,12 +71,6 @@ public class TransactionService {
                 getNumberOfFailedTransactions(allTransactions),
                 getMinAmountTransaction(),
                 getMaxAmountTransaction());
-    }
-
-    public Transaction getMinAmountTransaction() {
-        return transactionRepository.findFirstByOrderByAmountAsc().orElseThrow(() -> {
-            throw new TransactionNotFound("No transaction has been found.");
-        });
     }
 
     public List<Transaction> parseUploadedFiles(List<MultipartFile> files, User currentUser) {
