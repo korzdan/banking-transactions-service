@@ -20,12 +20,11 @@ public class FileService {
         return fileRepository.getAllByUserId(userId);
     }
 
-    public File saveUploadedFile(MultipartFile file) {
-        return fileRepository.save(createFile(file));
+    public File saveUploadedFile(MultipartFile file, User currentUser) {
+        return fileRepository.save(createFile(file, currentUser));
     }
 
-    private File createFile(MultipartFile file) {
-        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    private File createFile(MultipartFile file, User currentUser) {
         return new File(file.getOriginalFilename(), currentUser);
     }
 

@@ -89,7 +89,7 @@ public class TransactionService {
         try {
             Parser parser = parserFactory.getParser(file);
             transactions.addAll(parser.parse(file.getInputStream(), currentUser));
-            fileService.saveUploadedFile(file);
+            fileService.saveUploadedFile(file, currentUser);
         } catch (IOException e) {
             errorLog.append(" Cannot get InputStream from " + file.getOriginalFilename());
         } catch (FileParserException | InvalidFileException | ParserNotFound e) {
