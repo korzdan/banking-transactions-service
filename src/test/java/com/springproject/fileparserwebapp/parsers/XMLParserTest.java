@@ -6,12 +6,15 @@ import com.springproject.fileparserwebapp.models.Transaction;
 import com.springproject.fileparserwebapp.models.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class XMLParserTest {
 
@@ -31,34 +34,39 @@ class XMLParserTest {
     }
 
     @Test
+    @DisplayName("Return xml for calling getAppropriateExtension()")
     void ReturnFileExtensionFromParser() {
-        Assertions.assertEquals("xml", xmlParser.getAppropriateExtension());
+        assertEquals("xml", xmlParser.getAppropriateExtension());
     }
 
     @Test
+    @DisplayName("Return 2 parsed transactions from xml_example.xml when calling parse()")
     void Return2Transactions_WhenXmlFileParse() throws IOException {
         List<Transaction> transactionList = xmlParser.parse(new FileInputStream(xmlFile), new User());
-        Assertions.assertEquals(2, transactionList.size());
+        assertEquals(2, transactionList.size());
     }
 
     @Test
+    @DisplayName("Throw InvalidFileException for calling parse() with file that has null values")
     void ThrowInvalidFileException_When_NoValuesInFile() {
-        InvalidFileException exception = Assertions.assertThrows(InvalidFileException.class,
+        InvalidFileException exception = assertThrows(InvalidFileException.class,
                 () -> xmlParser.parse(new FileInputStream(exceptionXmlFile), new User()));
-        Assertions.assertEquals(" has some null values: it cannot be parsed.", exception.getMessage());
+        assertEquals(" has some null values: it cannot be parsed.", exception.getMessage());
     }
 
     @Test
+    @DisplayName("Throw InvalidFileException for calling parse() with file that has no TransactionId")
     void ThrowInvalidFileException_When_NoTransactionIdInFile() {
-        InvalidFileException exception = Assertions.assertThrows(InvalidFileException.class,
+        InvalidFileException exception = assertThrows(InvalidFileException.class,
                 () -> xmlParser.parse(new FileInputStream(xmlFileWithoutTransactionId), new User()));
-        Assertions.assertEquals(" has some null values: it cannot be parsed.", exception.getMessage());
+        assertEquals(" has some null values: it cannot be parsed.", exception.getMessage());
     }
 
     @Test
+    @DisplayName("Throw FileParserException for invalid file when calling parse()")
     void ThrowFileParserException_ForInvalidFile() {
-        FileParserException exception = Assertions.assertThrows(FileParserException.class,
+        FileParserException exception = assertThrows(FileParserException.class,
                 () -> xmlParser.parse(new FileInputStream(invalidFile), new User()));
-        Assertions.assertEquals(" cannot be parsed: file is invalid.", exception.getMessage());
+        assertEquals(" cannot be parsed: file is invalid.", exception.getMessage());
     }
 }

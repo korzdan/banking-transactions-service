@@ -2,6 +2,7 @@ package com.springproject.fileparserwebapp.parsers;
 
 import com.springproject.fileparserwebapp.exception.ParserNotFound;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,8 +29,8 @@ class ParserFactoryTest {
         incorrectFile = new File("D:\\Internship - ITechArtRep\\Spring Project Info\\FilesExample\\file.txt");
     }
 
-
     @Test
+    @DisplayName("Return XMLParser for xml extension file")
     void ReturnXMLParser_ForXmlFile() throws IOException {
         MultipartFile xmlMultipart = new MockMultipartFile("file.xml",
                 "xml_example.xml", "text/xml", new FileInputStream(xmlFile));
@@ -38,6 +39,7 @@ class ParserFactoryTest {
     }
 
     @Test
+    @DisplayName("Return CSVParser for csv extension file")
     void ReturnCSVParser_ForCSVFile() throws IOException {
         MultipartFile csvMultipart = new MockMultipartFile("file.csv",
                 "csv_example.csv", "text/csv", new FileInputStream(csvFile));
@@ -46,6 +48,7 @@ class ParserFactoryTest {
     }
 
     @Test
+    @DisplayName("Throw ParserNotFound for unsupported file extension")
     void ThrowParserNotFound_ForIncorrectExtensionOfFile() throws IOException {
         MultipartFile incorrectMultipart = new MockMultipartFile("text.txt", "file.txt",
                 "text/plain", new FileInputStream(incorrectFile));
