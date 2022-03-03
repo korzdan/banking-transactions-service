@@ -61,12 +61,14 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password);
+                && Objects.equals(password, user.password)
+                && role == user.role
+                && status == user.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id, username, password, role, status);
     }
 
     @Override
