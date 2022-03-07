@@ -40,6 +40,9 @@ const FileUpload = () => {
             if (error.response.status === 400) {
                 setZeroFilesNum("At least one file should be selected!");
             }
+            if (error.response.status === 409) {
+                setResults("The uploaded file is too large.")
+            }
         })
     }
 

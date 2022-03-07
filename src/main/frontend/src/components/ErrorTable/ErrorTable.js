@@ -25,7 +25,7 @@ const ErrorTable = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>Username</th>
+                        <th>User-id</th>
                         <th>Message</th>
                     </tr>
                 </thead>
@@ -33,7 +33,7 @@ const ErrorTable = () => {
                 {
                     errors.map((error) => (
                         <tr key={error.id}>
-                            <td>{error.user.username}</td>
+                            <td>{error.id}</td>
                             <td>{error.message}</td>
                         </tr>
                     ))
