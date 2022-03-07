@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DrawerComponent from "./DrawerComponent";
+import {getRole, getToken} from "../../utils/Common";
 
 const useStyles = makeStyles((theme) => ({
     navlinks: {
@@ -35,6 +36,7 @@ function Navbar() {
     const classes = useStyles();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+    const isManager = getRole(getToken()) === "MANAGER";
 
     return (
         <AppBar position="static" style={{
@@ -55,6 +57,7 @@ function Navbar() {
                         <Link to="/errors" className={classes.link}>
                             Errors
                         </Link>
+                        {isManager && <Link to="/transactions" className={classes.link}>Transactions</Link>}
                     </div>
                 )}
             </Toolbar>

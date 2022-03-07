@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
+import {getRole, getToken} from "../../utils/Common";
 
 const useStyles = makeStyles(()=>({
     link:{
@@ -24,6 +25,8 @@ const useStyles = makeStyles(()=>({
 function DrawerComponent() {
     const classes = useStyles();
     const [openDrawer, setOpenDrawer] = useState(false);
+    const isManager = getRole(getToken()) === "MANAGER";
+
     return (
         <>
             <Drawer
@@ -41,6 +44,11 @@ function DrawerComponent() {
                             <Link to="/errors">Errors</Link>
                         </ListItemText>
                     </ListItem>
+                    {isManager && <ListItem onClick={() => setOpenDrawer(false)}>
+                        <ListItemText>
+                            <Link to="/transactions">Transactions</Link>
+                        </ListItemText>
+                    </ListItem>}
                 </List>
             </Drawer>
             <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
