@@ -1,0 +1,29 @@
+.transactions-table {
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    padding: 1rem;
+    overflow-y: scroll;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #ffffff;
+    text-align: left;
+    padding: 8px;
+    font-size: 15px;
+}
+
+th {
+    background-color: #59981A;
+    text-align: center;
+}
+
+td {
+    background-color: #81B622;
+}
