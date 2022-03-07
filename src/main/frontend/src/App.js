@@ -4,6 +4,10 @@ import Login from "./components/Login/Login";
 import ErrorTable from "./components/ErrorTable/ErrorTable";
 import FileUpload from "./components/FileUpload/FileUpload";
 import Navbar from "./components/Navbar/Navbar";
+import Transactions from "./components/Transactions/Transactions";
+import TransactionTable from "./components/Transactions/TransactionTable";
+import TransactionCard from "./components/Transactions/TransactionCard";
+import Statistics from "./components/Transactions/Statistics";
 
 
 function App() {
@@ -18,6 +22,22 @@ function App() {
                   <Navbar/>
                   <Route path="/errors" component={ErrorTable}/>
                   <Route path="/upload" component={FileUpload}/>
+                  <Route path="/transactions" component={Transactions}/>
+                  <Route exact path="/transactions/all">
+                      <TransactionTable url="http://localhost:8080/transactions"/>
+                  </Route>
+                  <Route exact path="/transactions/top">
+                      <TransactionTable url="http://localhost:8080/transactions/top"/>
+                  </Route>
+                  <Route exact path="/transactions/max">
+                      <TransactionCard url="http://localhost:8080/transactions/max"/>
+                  </Route>
+                  <Route exact path="/transactions/min">
+                      <TransactionCard url="http://localhost:8080/transactions/min"/>
+                  </Route>
+                  <Route exact path="/transactions/statistics">
+                      <Statistics/>
+                  </Route>
               </div>
           </Switch>
       </BrowserRouter>
