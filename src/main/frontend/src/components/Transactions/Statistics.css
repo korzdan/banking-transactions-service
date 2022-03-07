@@ -1,0 +1,31 @@
+.main-statistics {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.general-statistics {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #59981A;
+    width: 600px;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.top-transactions {
+    width: 100vh;
+    height: 300px;
+    margin: 20px;
+}
+
+.top-transactions .outer-card-st {
+    display: inline;
+}
+
+.successful {
+    margin: 20px;
+}
