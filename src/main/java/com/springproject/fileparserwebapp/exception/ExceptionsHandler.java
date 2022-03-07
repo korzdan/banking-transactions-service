@@ -1,5 +1,6 @@
 package com.springproject.fileparserwebapp.exception;
 
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -40,4 +41,8 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FileSizeLimitExceededException.class)
+    public ResponseEntity<?> handleUserNotFoundException(FileSizeLimitExceededException exception) {
+        return new ResponseEntity<>("The uploaded file is too large.", HttpStatus.CONFLICT);
+    }
 }
