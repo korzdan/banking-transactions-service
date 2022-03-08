@@ -29,8 +29,7 @@ const Statistics = () => {
                 <div className="failed">failed transactions: {statistics.numberOfFailed}</div>
             </div>
             <div className="top-transactions">
-                <div className="outer-card-st">
-                    <div className="transaction-card">
+                    <div className="transaction">
                         <div className="card-field">Transaction ID: {minTransaction.transactionId}</div>
                         <div className="card-field">User ID: {minTransaction.userId}</div>
                         <div className="card-field">Status: {minTransaction.status}</div>
@@ -38,9 +37,7 @@ const Statistics = () => {
                         <div className="card-field">Currency: {minTransaction.currency}</div>
                         <div className="card-field">Timestamp: {minTransaction.timestamp}</div>
                     </div>
-                </div>
-                <div className="outer-card-st">
-                    <div className="transaction-card">
+                    <div className="transaction">
                         <div className="card-field">Transaction ID: {maxTransaction.transactionId}</div>
                         <div className="card-field">User ID: {maxTransaction.userId}</div>
                         <div className="card-field">Status: {maxTransaction.status}</div>
@@ -48,7 +45,6 @@ const Statistics = () => {
                         <div className="card-field">Currency: {maxTransaction.currency}</div>
                         <div className="card-field">Timestamp: {maxTransaction.timestamp}</div>
                     </div>
-                </div>
             </div>
         </div>
     );
