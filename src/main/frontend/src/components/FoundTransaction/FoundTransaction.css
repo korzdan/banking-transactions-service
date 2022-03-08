@@ -1,0 +1,34 @@
+.outer-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 250px;
+}
+
+.transaction-card {
+    background-color: #59981A;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    height: 200px;
+    width: 500px;
+    position: absolute;
+    border-radius: 15px;
+    transition: 0.5s;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.card-field {
+    padding: 3px;
+}
+
+.transaction-card:hover {
+    background-color: #013A20;
+    height: 220px;
+    width: 520px;
+    font-size: 16px;
+    font-weight: 520;
+    padding: 18px;
+}
