@@ -1,16 +1,16 @@
 import React from 'react';
-import "../Transactions/Transactions.css";
+import "../TransactionsOperations/TransactionsOperations.css";
 import {useHistory} from "react-router";
 
-const Transactions = () => {
+const TransactionsOperations = () => {
 
     const history = useHistory();
 
     return (
         <div className="transactions">
             <div className="transactions-buttons">
-                <button onClick={() => history.push("/transactions/all")}>All transactions</button>
-                <button onClick={() => history.push("/transactions/:id")}>User transactions</button>
+                <button onClick={() => history.push("/transactions")}>All transactions</button>
+                <button onClick={() => history.push("/transactions/search")}>Find transaction</button>
                 <button onClick={() => history.push("/transactions/top")}>Top transactions</button>
                 <button onClick={() => history.push("/transactions/max")}>Max transaction</button>
                 <button onClick={() => history.push("/transactions/min")}>Min transaction</button>
@@ -20,4 +20,4 @@ const Transactions = () => {
     );
 };
 
-export default Transactions;
+export default TransactionsOperations;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {getToken} from "../../utils/Common";
-import "../Transactions/TransactionCard.css"
+import "../TransactionCard/TransactionCard.css"
 
 const TransactionCard = (props) => {
 

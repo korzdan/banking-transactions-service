@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import "../Transactions/Statistics.css"
+import "../Statistics/Statistics.css"
 import axios from "axios";
 import {getToken} from "../../utils/Common";
 

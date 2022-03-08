@@ -4,10 +4,12 @@ import Login from "./components/Login/Login";
 import ErrorTable from "./components/ErrorTable/ErrorTable";
 import FileUpload from "./components/FileUpload/FileUpload";
 import Navbar from "./components/Navbar/Navbar";
-import Transactions from "./components/Transactions/Transactions";
-import TransactionTable from "./components/Transactions/TransactionTable";
-import TransactionCard from "./components/Transactions/TransactionCard";
-import Statistics from "./components/Transactions/Statistics";
+import TransactionsOperations from "./components/TransactionsOperations/TransactionsOperations";
+import TransactionTable from "./components/TransactionsTable/TransactionTable";
+import TransactionCard from "./components/TransactionCard/TransactionCard";
+import Statistics from "./components/Statistics/Statistics";
+import TransactionSearch from "./components/TransactionSearch/TransactionSearch";
+import FoundTransaction from "./components/FoundTransaction/FoundTransaction";
 
 
 function App() {
@@ -22,8 +24,8 @@ function App() {
                   <Navbar/>
                   <Route path="/errors" component={ErrorTable}/>
                   <Route path="/upload" component={FileUpload}/>
-                  <Route path="/transactions" component={Transactions}/>
-                  <Route exact path="/transactions/all">
+                  <Route path="/transactions" component={TransactionsOperations}/>
+                  <Route exact path="/transactions">
                       <TransactionTable url="http://localhost:8080/transactions"/>
                   </Route>
                   <Route exact path="/transactions/top">
@@ -37,6 +39,12 @@ function App() {
                   </Route>
                   <Route exact path="/transactions/statistics">
                       <Statistics/>
+                  </Route>
+                  <Route exact path="/transactions/search">
+                      <TransactionSearch/>
+                  </Route>
+                  <Route exact path="/transactions/search/:id">
+                      <FoundTransaction/>
                   </Route>
               </div>
           </Switch>
