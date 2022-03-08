@@ -10,6 +10,11 @@ import TransactionCard from "./components/TransactionCard/TransactionCard";
 import Statistics from "./components/Statistics/Statistics";
 import TransactionSearch from "./components/TransactionSearch/TransactionSearch";
 import FoundTransaction from "./components/FoundTransaction/FoundTransaction";
+import UserTable from "./components/UserTable/UserTable";
+import UserPage from "./components/UserPage/UserPage";
+import UserTransactions from "./components/UserTransactions/UserTransactions";
+import UserFiles from "./components/UserFiles/UserFiles";
+import UserErrors from "./components/UserErrors/UserErrors";
 
 
 function App() {
@@ -24,6 +29,7 @@ function App() {
                   <Navbar/>
                   <Route path="/errors" component={ErrorTable}/>
                   <Route path="/upload" component={FileUpload}/>
+
                   <Route path="/transactions" component={TransactionsOperations}/>
                   <Route exact path="/transactions">
                       <TransactionTable url="http://localhost:8080/transactions"/>
@@ -46,6 +52,23 @@ function App() {
                   <Route exact path="/transactions/search/:id">
                       <FoundTransaction/>
                   </Route>
+
+                  <Route exact path="/users/:id">
+                      <UserPage/>
+                  </Route>
+                  <Route exact path="/users">
+                      <UserTable/>
+                  </Route>
+                  <Route exact path="/users/:id/transactions">
+                      <UserTransactions/>
+                  </Route>
+                  <Route exact path="/users/:id/files">
+                      <UserFiles/>
+                  </Route>
+                  <Route exact path="/users/:id/errors">
+                      <UserErrors/>
+                  </Route>
+
               </div>
           </Switch>
       </BrowserRouter>
