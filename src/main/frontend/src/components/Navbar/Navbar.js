@@ -58,6 +58,7 @@ function Navbar() {
                             Errors
                         </Link>
                         {isManager && <Link to="/transactions" className={classes.link}>Transactions</Link>}
+                        <Link to="/login" className={classes.link}>Re-login</Link>
                     </div>
                 )}
             </Toolbar>
