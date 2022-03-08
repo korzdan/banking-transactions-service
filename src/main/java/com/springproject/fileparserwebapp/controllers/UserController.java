@@ -28,14 +28,19 @@ public class UserController {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}/transactions")
     public ResponseEntity<?> getAllTransactionsOfUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getTransactionsOfUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable Long id) {
-        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    @GetMapping("/{userId}/files")
+    public ResponseEntity<?> getAllFilesUploadedByUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(fileService.findAllFilesUploadedByUser(userId), HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -43,11 +48,6 @@ public class UserController {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userService.registerUser(userDTO);
         return new ResponseEntity<>("User has been successfully registered!", HttpStatus.OK);
-    }
-
-    @GetMapping("/{userId}/files")
-    public ResponseEntity<?> getAllFilesUploadedByUser(@PathVariable Long userId) {
-        return new ResponseEntity<>(fileService.findAllFilesUploadedByUser(userId), HttpStatus.OK);
     }
 
 }
