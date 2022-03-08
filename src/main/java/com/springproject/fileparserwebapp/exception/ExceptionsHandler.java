@@ -25,7 +25,6 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.CONFLICT);
     }
 
-
     @ExceptionHandler(ParserNotFound.class)
     public ResponseEntity<?> handleParserNotFoundException(ParserNotFound e) {
         return new ResponseEntity<>(new Date() + " " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
@@ -44,5 +43,10 @@ public class ExceptionsHandler {
     @ExceptionHandler(FileSizeLimitExceededException.class)
     public ResponseEntity<?> handleUserNotFoundException(FileSizeLimitExceededException exception) {
         return new ResponseEntity<>("The uploaded file is too large.", HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UsernameAlreadyExists.class)
+    public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExists exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
     }
 }
