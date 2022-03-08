@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {getToken} from "../../utils/Common";
-import "../Transactions/TransactionTable.css"
+import "../TransactionsTable/TransactionTable.css"
 
 const TransactionTable = (props) => {
     const [transactions, setTransactions] = useState([]);
@@ -13,7 +13,6 @@ const TransactionTable = (props) => {
             }
         }).then(response => {
             setTransactions(response.data);
-            console.log(response.data);
         });
     }, []);
 
