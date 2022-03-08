@@ -45,7 +45,7 @@ public class UserController {
         return new ResponseEntity<>("User has been successfully registered!", HttpStatus.OK);
     }
 
-    @GetMapping("users/{userId}/files")
+    @GetMapping("/{userId}/files")
     public ResponseEntity<?> getAllFilesUploadedByUser(@PathVariable Long userId) {
         return new ResponseEntity<>(fileService.findAllFilesUploadedByUser(userId), HttpStatus.OK);
     }
