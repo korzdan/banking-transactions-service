@@ -20,7 +20,7 @@ const ErrorTable = () => {
 
 
     return (
-        <div className="error-table">
+        <div className="outer-table">
             <div className="scroll-div">
             <table>
                 <thead>
