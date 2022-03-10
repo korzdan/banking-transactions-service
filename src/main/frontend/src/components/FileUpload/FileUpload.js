@@ -58,7 +58,7 @@ const FileUpload = () => {
             </label>
             {multipleFiles.length!==0 && <div id="files_number">{multipleFiles.length} files are chosen</div>}
             {zeroFilesNum && <div id="files_number">{zeroFilesNum}</div>}
-            <button type="button" disabled={disable} onClick={() => UploadMultipleFiles()}>SUBMIT</button>
+            <button type="button" disabled={disable} onClick={() => UploadMultipleFiles()}>Submit</button>
             {results && <div id="file_upload_results">{results}</div>}
 
             <TokenPopup trigger={popup} setTrigger={setPopup}>
