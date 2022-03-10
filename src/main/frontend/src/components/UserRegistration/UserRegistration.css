@@ -1,0 +1,97 @@
+.outer-from {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background-color: #013A20;
+    width: 50%;
+    height: 60%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s;
+}
+
+.container:hover {
+    width: 51%;
+    height: 61%;
+    box-shadow:  15px 20px 0.8em #464646;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 800;
+    position: fixed;
+    top: 25%;
+}
+
+.main-data {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.role-details {
+    font-size: 20px;
+    margin-bottom: 50px;
+    display: flex;
+    font-weight: 500;
+}
+
+.role-details div {
+    transition: 0.4s;
+}
+
+.role-details div:first-child {
+    margin-right: 10px;
+}
+
+.role-details div:hover {
+    color: #59981A;
+}
+
+.main-data div input {
+    font-size: 15px;
+    border-radius: 5px;
+    font-family: Roboto, sans-serif;
+}
+
+.main-data .form-group:first-child {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.form-group {
+    display: block;
+}
+
+.form-group label {
+    font-size: 20px;
+    margin-right: 4px;
+}
+
+.register-button {
+    background: #FFF;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.5s;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Roboto, sans-serif;
+}
+
+.register-button:hover {
+    background-color: #59981A;
+    color: #F8F8F8;
+}
+
+.error {
+    margin-bottom: 20px;
+    color: crimson;
+}
