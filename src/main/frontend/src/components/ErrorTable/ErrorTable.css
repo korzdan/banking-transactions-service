@@ -1,7 +1,7 @@
 .outer-table {
     display: flex;
     flex-direction: column;
-    height: 95vh;
+    height: 90vh;
     padding: 1rem;
     overflow-y: scroll;
 }

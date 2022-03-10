@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {setToken} from "../../utils/Common";
 import "../Login/Login.css"
@@ -7,6 +7,10 @@ const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        setToken('');
+    }, []);
 
     const handleLogin = () => {
         setError(null);
