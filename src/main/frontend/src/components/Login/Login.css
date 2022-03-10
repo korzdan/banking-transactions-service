@@ -75,6 +75,7 @@ form .form-inner .form-group input {
     border-radius: 8px;
     transition: 0.4s;
     font-size: 20px;
+    font-family: Roboto, sans-serif;
 }
 
 form .form-inner .form-group input:hover {
@@ -93,6 +94,7 @@ form .form-inner input[type="button"] {
     color: #FFF;
     font-weight: 700;
     cursor: pointer;
+    font-family: Roboto, sans-serif;
 }
 
 form .form-inner input[type="button"]:hover {
