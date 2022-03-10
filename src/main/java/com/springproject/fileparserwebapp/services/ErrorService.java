@@ -28,6 +28,10 @@ public class ErrorService {
         return isCurrentUserManager(user) ? getAllErrors() : getAllErrorsOfUser(user);
     }
 
+    public List<Error> getErrorsOfUserById(Long id) {
+        return errorRepository.getErrorsByUserId(id);
+    }
+
     private List<Error> getAllErrors() {
         return errorRepository.findAll();
     }

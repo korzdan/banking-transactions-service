@@ -2,6 +2,7 @@ package com.springproject.fileparserwebapp.controllers;
 
 import com.springproject.fileparserwebapp.dto.UserRequestDTO;
 import com.springproject.fileparserwebapp.models.User;
+import com.springproject.fileparserwebapp.services.ErrorService;
 import com.springproject.fileparserwebapp.services.FileService;
 import com.springproject.fileparserwebapp.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final FileService fileService;
+    private final ErrorService errorService;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping
@@ -41,6 +43,11 @@ public class UserController {
     @GetMapping("/{userId}/files")
     public ResponseEntity<?> getAllFilesUploadedByUser(@PathVariable Long userId) {
         return new ResponseEntity<>(fileService.findAllFilesUploadedByUser(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/errors")
+    public ResponseEntity<?> getErrorsOfUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(errorService.getErrorsOfUserById(userId), HttpStatus.OK);
     }
 
     @PostMapping("/register")
