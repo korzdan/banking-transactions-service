@@ -6,9 +6,11 @@
     overflow-y: scroll;
 }
 
-table {
+.user-table table {
     border-collapse: collapse;
-    width: 100%;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 th,
@@ -26,4 +28,13 @@ th {
 
 td {
     background-color: #59981A;
+    text-align: center;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.link, .link:visited, .link:hover, .link:active {
+    color: inherit;
 }

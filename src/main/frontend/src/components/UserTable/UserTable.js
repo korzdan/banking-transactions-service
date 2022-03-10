@@ -32,7 +32,7 @@ const UserTable = () => {
                     {
                         users.map((user) => (
                             <tr key={user.id}>
-                                <td><Link to={{
+                                <td><Link className="link" to={{
                                     pathname: `/users/${user.id}`,
                                     state: user
                                 }}>
