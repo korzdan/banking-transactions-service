@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
 #root {
   background-color: #ECF87F;
   position: fixed;
@@ -7,5 +9,5 @@
   left: 0;
   z-index: 1000;
   color: white;
-  font-family: "SansSerif", sans-serif;
+  font-family: Roboto, "sans-serif";
 }
