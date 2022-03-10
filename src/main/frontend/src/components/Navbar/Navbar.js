@@ -3,7 +3,6 @@ import {
     AppBar,
     Toolbar,
     CssBaseline,
-    Typography,
     makeStyles,
     useTheme,
     useMediaQuery,
@@ -11,23 +10,28 @@ import {
 import { Link } from "react-router-dom";
 import DrawerComponent from "./DrawerComponent";
 import {getRole, getToken} from "../../utils/Common";
+import logotype from "../../assets/logo.png";
 
 const useStyles = makeStyles((theme) => ({
     navlinks: {
         display: "flex",
     },
     logo: {
-        flexGrow: "1",
         cursor: "pointer",
+        width: "50px",
+        transition: "0.4s",
+        "&:hover": {
+            width: "55px",
+        },
     },
     link: {
         textDecoration: "none",
         color: "white",
         fontSize: "20px",
         marginLeft: theme.spacing(5),
+        transition: "0.4s",
         "&:hover": {
-            color: "yellow",
-            borderBottom: "1px solid white",
+            color: "#ECF87F",
         },
     },
 }));
@@ -40,13 +44,11 @@ function Navbar() {
 
     return (
         <AppBar position="static" style={{
-            backgroundColor: "#59981A"
+            backgroundColor: "#013A20"
         }}>
             <CssBaseline />
             <Toolbar>
-                <Typography variant="h5" className={classes.logo}>
-                    BTA
-                </Typography>
+                <img src={logotype} alt="logo" id="logo" className={classes.logo}/>
                 {isMobile ? (
                     <DrawerComponent />
                 ) : (
