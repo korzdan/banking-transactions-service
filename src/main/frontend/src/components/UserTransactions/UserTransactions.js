@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import "../ErrorTable/ErrorTable.css";
-import {useLocation} from "react-router";
+import axios from "axios";
+import {getToken} from "../../utils/Common";
+import {useParams} from "react-router";
 
 const UserTransactions = () => {
 
-    const data = useLocation();
+    const params = useParams();
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
-        setTransactions(data.state);
+        axios.get(`http://localhost:8080/users/${params.id}/transactions`, {
+            headers : {
+                'Authorization' : getToken()
+            }
+        }).then(response => {
+            setTransactions(response.data);
+        });
     }, []);
 
     return (

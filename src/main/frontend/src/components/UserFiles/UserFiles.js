@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import "../ErrorTable/ErrorTable.css";
-import {useLocation} from "react-router";
+import {useParams} from "react-router";
+import axios from "axios";
+import {getToken} from "../../utils/Common";
 
 const UserFiles = () => {
 
-    const data = useLocation();
+    const params = useParams();
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
-        setFiles(data.state);
+        axios.get(`http://localhost:8080/users/${params.id}/files`, {
+            headers : {
+                'Authorization' : getToken()
+            }
+        }).then(response => {
+            setFiles(response.data);
+        });
     }, []);
 
     return (

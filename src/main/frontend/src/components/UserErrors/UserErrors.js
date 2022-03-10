@@ -1,14 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import "../ErrorTable/ErrorTable.css";
-import {useLocation} from "react-router";
+import {useParams} from "react-router";
+import axios from "axios";
+import {getToken} from "../../utils/Common";
 
 const UserErrors = () => {
 
-    const data = useLocation();
+    const params = useParams();
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
-        setErrors(data.state);
+        axios.get(`http://localhost:8080/users/${params.id}/errors`, {
+            headers : {
+                'Authorization' : getToken()
+            }
+        }).then(response => {
+            setErrors(response.data);
+        });
     }, []);
 
     return (
