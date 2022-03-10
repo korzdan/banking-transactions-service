@@ -15,7 +15,6 @@ const UserTable = () => {
             }
         }).then(response => {
             setUsers(response.data);
-            console.log(response.data);
         });
     }, []);
 

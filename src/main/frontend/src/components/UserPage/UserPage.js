@@ -1,15 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import "../UserPage/UserPage.css"
-import {useLocation} from "react-router";
+import {useParams} from "react-router";
 import {Link} from "react-router-dom";
+import axios from "axios";
+import {getToken} from "../../utils/Common";
 
 const UserPage = () => {
 
-    const data = useLocation();
+    const params = useParams();
     const [user, setUser] = useState('');
 
     useEffect(() => {
-        setUser(data.state);
+        axios.get(`http://localhost:8080/users/${params.id}`, {
+            headers : {
+                'Authorization' : getToken()
+            }
+        }).then(response => {
+            setUser(response.data);
+        });
     }, []);
 
     return (
