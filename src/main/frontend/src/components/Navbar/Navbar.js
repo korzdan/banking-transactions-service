@@ -59,6 +59,7 @@ function Navbar() {
                         </Link>
                         {isManager && <Link to="/transactions" className={classes.link}>Transactions</Link>}
                         {isManager && <Link to="/users" className={classes.link}>Users</Link>}
+                        {isManager && <Link to="/users/register" className={classes.link}>Register</Link>}
                         <Link to="/login" className={classes.link}>Re-login</Link>
                     </div>
                 )}

@@ -54,6 +54,11 @@ function DrawerComponent() {
                             <Link to="/users">Users</Link>
                         </ListItemText>
                     </ListItem>}
+                    {isManager && <ListItem onClick={() => setOpenDrawer(false)}>
+                        <ListItemText>
+                            <Link to="/users/register">Register</Link>
+                        </ListItemText>
+                    </ListItem>}
                     <ListItem onClick={() => setOpenDrawer(false)}>
                         <ListItemText>
                             <Link to="/login">Re-login</Link>
