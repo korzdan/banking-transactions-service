@@ -32,3 +32,13 @@
     font-weight: 520;
     padding: 18px;
 }
+
+.search-error {
+    color: red;
+    font-weight: 600;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
