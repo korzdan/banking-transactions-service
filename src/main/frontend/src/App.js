@@ -15,6 +15,7 @@ import UserPage from "./components/UserPage/UserPage";
 import UserTransactions from "./components/UserTransactions/UserTransactions";
 import UserFiles from "./components/UserFiles/UserFiles";
 import UserErrors from "./components/UserErrors/UserErrors";
+import UserRegistration from "./components/UserRegistration/UserRegistration";
 
 
 function App() {
@@ -25,11 +26,11 @@ function App() {
                   <Redirect to="/login" component={Login}/>
               </Route>
               <Route path="/login" component={Login}/>
+              <Route exact path="/users/register" component={UserRegistration}/>
               <div>
                   <Navbar/>
                   <Route path="/errors" component={ErrorTable}/>
                   <Route path="/upload" component={FileUpload}/>
-
                   <Route path="/transactions" component={TransactionsOperations}/>
                   <Route exact path="/transactions">
                       <TransactionTable url="http://localhost:8080/transactions"/>
@@ -52,7 +53,6 @@ function App() {
                   <Route exact path="/transactions/search/:id">
                       <FoundTransaction/>
                   </Route>
-
                   <Route exact path="/users/:id">
                       <UserPage/>
                   </Route>
